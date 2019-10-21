@@ -23,8 +23,8 @@
 # THE SOFTWARE.
 
 
-execute "apt-get update" do
-  command "apt-get update"
+execute "yum update" do
+  command "yum update"
   user "root"
 end
 
