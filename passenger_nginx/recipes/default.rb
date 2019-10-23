@@ -241,6 +241,13 @@ end
 #   not_if { File.exists? "/opt/nginx/logs/nginx.pid" }
 # end
 
+bash "GET STATUS" do
+  code <<-EOF
+  sudo systemctl status nginx.service
+  nginx -t
+  EOF
+end
+
 service "nginx" do
   supports :status => true, :restart => true, :reload => true
   action [ :enable, :start ]
