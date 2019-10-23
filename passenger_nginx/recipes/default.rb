@@ -156,10 +156,10 @@ directory "/opt/nginx/conf/sites-available" do
 end
 
 # Set up service to run by default
-service 'nginx' do
-  supports :status => true, :restart => true, :reload => true
-  action [ :enable ]
-end
+# service 'nginx' do
+#   supports :status => true, :restart => true, :reload => true
+#   action [ :enable ]
+# end
 
 # Add any applications that we need
 node['passenger_nginx']['apps'].each do |app|
@@ -231,12 +231,20 @@ node['passenger_nginx']['apps'].each do |app|
 end
 
 # Restart/start nginx
-service "nginx" do
-  action :restart
-  only_if { File.exists? "/opt/nginx/logs/nginx.pid" }
-end
+# service "nginx" do
+#   action :restart
+#   only_if { File.exists? "/opt/nginx/logs/nginx.pid" }
+# end
+
+# service "nginx" do
+#   action :start
+#   not_if { File.exists? "/opt/nginx/logs/nginx.pid" }
+# end
 
 service "nginx" do
-  action :start
+  supports :status => true, :restart => true, :reload => true
+  action [ :enable, :start ]
   not_if { File.exists? "/opt/nginx/logs/nginx.pid" }
 end
+
+
