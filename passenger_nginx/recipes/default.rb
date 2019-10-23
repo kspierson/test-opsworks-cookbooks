@@ -244,7 +244,7 @@ end
 bash "GET STATUS" do
   code <<-EOF
   sudo systemctl status nginx.service
-  sudo nginx -t
+  sudo /usr/local/nginx/sbin/nginx -t -c /usr/local/nginx/conf/nginx.conf
   EOF
 end
 
