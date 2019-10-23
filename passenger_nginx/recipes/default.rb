@@ -29,7 +29,7 @@ execute "yum update" do
 end
 
 # Install basic packages
-%w(git make glibc-devel gcc patch curl openssl-devel libcurl-devel libpcre3 libpcre3-dev).each do |pkg|
+%w(git make glibc-devel gcc patch curl openssl-devel libcurl-devel pcre-devel).each do |pkg|
   yum_package pkg
 end
 
