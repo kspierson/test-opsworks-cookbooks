@@ -124,8 +124,15 @@ template "/opt/nginx/conf/nginx.conf" do
 end
 
 # Install the nginx control script
-cookbook_file "/etc/init.d/nginx" do
-  source "nginx.initd"
+# cookbook_file "/etc/init.d/nginx" do
+#   source "nginx.initd"
+#   action :create
+#   mode 0755
+# end
+
+# Install nginx systemd service file
+cookbook_file "/lib/systemd/system/nginx.service" do
+  source "nginx.service"
   action :create
   mode 0755
 end
