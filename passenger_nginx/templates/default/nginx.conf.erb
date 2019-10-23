@@ -38,17 +38,24 @@ http {
   # Monitoring
   server {
     listen 80;
-    server_name 127.0.0.1;
-    location /nginx_status {
-      stub_status on;
-      access_log   off;
-      allow 127.0.0.1;
-      deny all;
+    #server_name 127.0.0.1;
+    # location /nginx_status {
+    #   stub_status on;
+    #   access_log   off;
+    #   allow 127.0.0.1;
+    #   deny all;
+    # }
+    location / {
+      return 200 'SUCCESS!!';
+      # because default content-type is application/octet-stream,
+      # browser will offer to "save the file"...
+      # if you want to see reply in browser, uncomment next line 
+      add_header Content-Type text/plain;
     }
   }
 
   # Include virtual host configs
-  include sites-enabled/*;
+  #include sites-enabled/*;
 }
 
 
