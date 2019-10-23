@@ -248,6 +248,7 @@ bash "GET STATUS" do
   sudo journalctl -xn
   sudo /opt/nginx/sbin/nginx -t -c /opt/nginx/conf/nginx.conf
   EOF
+  flags "-x"
 end
 
 service "nginx" do
