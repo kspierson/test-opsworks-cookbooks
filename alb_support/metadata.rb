@@ -1,4 +1,4 @@
-name             'passenger-nginx'
+name             'alb_support'
 maintainer       'Ken Pierson'
 maintainer_email 'kspierson@gmail.com'
 license          'MIT'
