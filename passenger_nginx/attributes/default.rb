@@ -13,7 +13,7 @@ default['passenger_nginx']['nginx']['error_log'] = 'logs/error.log'
 default['passenger_nginx']['nginx']['http2'] = false
 
 # Passenger
-default['passenger_nginx']['passenger']['version'] = '4.0.1'
+default['passenger_nginx']['passenger']['version'] = '5.0.1'
 default['passenger_nginx']['passenger']['max_pool_size'] = 15
 default['passenger_nginx']['passenger']['min_instances'] = 1
 default['passenger_nginx']['passenger']['pool_idle_time'] = 300
