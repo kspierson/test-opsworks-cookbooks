@@ -3,6 +3,7 @@
 # Recipe:: default
 #
 # Copyright (C) 2014 Ballistiq Digital, Inc.
+# Modified by Ken Pierson (2019)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -244,7 +245,8 @@ end
 bash "GET STATUS" do
   code <<-EOF
   sudo systemctl status nginx.service
-  sudo /usr/local/nginx/sbin/nginx -t -c /usr/local/nginx/conf/nginx.conf
+  sudo journalctl -xn
+  sudo /opt/nginx/sbin/nginx -t -c /opt/nginx/conf/nginx.conf
   EOF
 end
 
