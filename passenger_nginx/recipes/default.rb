@@ -242,14 +242,14 @@ end
 #   not_if { File.exists? "/opt/nginx/logs/nginx.pid" }
 # end
 
-bash "GET STATUS" do
-  code <<-EOF
-  sudo systemctl status nginx.service
-  sudo journalctl -xn
-  sudo /opt/nginx/sbin/nginx -t -c /opt/nginx/conf/nginx.conf
-  EOF
-  flags "-x"
-end
+# bash "GET STATUS" do
+#   code <<-EOF
+#   sudo systemctl status nginx.service
+#   sudo journalctl -xn
+#   sudo /opt/nginx/sbin/nginx -t -c /opt/nginx/conf/nginx.conf
+#   EOF
+#   flags "-x"
+# end
 
 service "nginx" do
   supports :status => true, :restart => true, :reload => true
