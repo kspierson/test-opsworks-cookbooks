@@ -132,11 +132,11 @@ end
 # end
 
 # Install nginx systemd service file
-cookbook_file "/lib/systemd/system/nginx.service" do
-  source "nginx.service"
-  action :create
-  mode 0755
-end
+# cookbook_file "/lib/systemd/system/nginx.service" do
+#   source "nginx.service"
+#   action :create
+#   mode 0755
+# end
 
 # Add log rotation
 cookbook_file "/etc/logrotate.d/nginx" do
