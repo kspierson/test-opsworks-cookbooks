@@ -251,6 +251,10 @@ end
 #   flags "-x"
 # end
 
+systemd_unit "nginx.service" do
+  action :reload
+end
+
 service "nginx" do
   provider Chef::Provider::Service::Systemd
   supports :status => true, :restart => true, :reload => true
