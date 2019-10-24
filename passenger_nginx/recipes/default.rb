@@ -70,20 +70,20 @@ end
 
 
 # Check for if we are installing Passenger Enterprise
-passenger_enterprise = !!node['passenger_nginx']['passenger']['enterprise_download_token']
+# passenger_enterprise = !!node['passenger_nginx']['passenger']['enterprise_download_token']
 
-if passenger_enterprise
-  bash "Installing Passenger Enterprise Edition" do
-    code <<-EOF
-    source #{node['passenger_nginx']['rvm']['rvm_shell']}
-    gem install --source https://download:#{node['passenger_nginx']['passenger']['enterprise_download_token']}@www.phusionpassenger.com/enterprise_gems/ passenger-enterprise-server -v #{node['passenger_nginx']['passenger']['version']} --no-document
-    EOF
-    user "root"
+# if passenger_enterprise
+#   bash "Installing Passenger Enterprise Edition" do
+#     code <<-EOF
+#     source #{node['passenger_nginx']['rvm']['rvm_shell']}
+#     gem install --source https://download:#{node['passenger_nginx']['passenger']['enterprise_download_token']}@www.phusionpassenger.com/enterprise_gems/ passenger-enterprise-server -v #{node['passenger_nginx']['passenger']['version']} --no-document
+#     EOF
+#     user "root"
 
-    regex = Regexp.escape("passenger-enterprise-server (#{node['passenger_nginx']['passenger']['version']})")
-    not_if { `bash -c "source #{node['passenger_nginx']['rvm']['rvm_shell']} && gem list"`.lines.grep(/^#{regex}/).count > 0 }
-  end
-else
+#     regex = Regexp.escape("passenger-enterprise-server (#{node['passenger_nginx']['passenger']['version']})")
+#     not_if { `bash -c "source #{node['passenger_nginx']['rvm']['rvm_shell']} && gem list"`.lines.grep(/^#{regex}/).count > 0 }
+#   end
+# else
   # Install Passenger open source
   bash "Installing Passenger Open Source Edition" do
     code <<-EOF
@@ -95,7 +95,7 @@ else
     regex = Regexp.escape("passenger (#{node['passenger_nginx']['passenger']['version']})")
     not_if { `bash -c "source #{node['passenger_nginx']['rvm']['rvm_shell']} && gem list"`.lines.grep(/^#{regex}/).count > 0 }
   end
-end
+# end
 
 bash "Installing passenger nginx module and nginx from source" do
   code <<-EOF
@@ -107,11 +107,11 @@ bash "Installing passenger nginx module and nginx from source" do
 end
 
 # Create the config
-if passenger_enterprise
-  passenger_root = "/usr/local/rvm/gems/ruby-#{node['passenger_nginx']['ruby_version']}/gems/passenger-enterprise-server-#{node['passenger_nginx']['passenger']['version']}"
-else
+# if passenger_enterprise
+#   passenger_root = "/usr/local/rvm/gems/ruby-#{node['passenger_nginx']['ruby_version']}/gems/passenger-enterprise-server-#{node['passenger_nginx']['passenger']['version']}"
+# else
   passenger_root = "/usr/local/rvm/gems/ruby-#{node['passenger_nginx']['ruby_version']}/gems/passenger-#{node['passenger_nginx']['passenger']['version']}"
-end
+# end
 
 template "/opt/nginx/conf/nginx.conf" do
   source "nginx.conf.erb"

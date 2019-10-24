@@ -21,8 +21,8 @@ default['passenger_nginx']['passenger']['max_instances_per_app'] = 0
 default['passenger_nginx']['passenger']['rolling_restarts'] = nil
 
 # Passenger Enterprise
-default['passenger_nginx']['passenger']['enterprise_license'] = nil
-default['passenger_nginx']['passenger']['enterprise_download_token'] = nil
+# default['passenger_nginx']['passenger']['enterprise_license'] = nil
+# default['passenger_nginx']['passenger']['enterprise_download_token'] = nil
 
 # a list of URL's to pre-start.
 default['passenger_nginx']['passenger']['pre_start'] = []
