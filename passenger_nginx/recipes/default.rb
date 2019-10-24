@@ -252,6 +252,7 @@ end
 # end
 
 service "nginx" do
+  provider Chef::Provider::Service::Systemd
   supports :status => true, :restart => true, :reload => true
   action [ :enable, :start ]
   not_if { File.exists? "/opt/nginx/logs/nginx.pid" }
