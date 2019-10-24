@@ -30,11 +30,11 @@ execute "yum update" do
 end
 
 # Install basic packages
-%w(git curl gpg gcc gcc-c++ make glibc-devel openssl openssl-devel openssl-libs libcurl libcurl-devel pcre-devel).each do |pkg|
+%w(git curl gpg2 gcc gcc-c++ make glibc-devel openssl openssl-devel openssl-libs libcurl libcurl-devel pcre-devel).each do |pkg|
   yum_package pkg
 end
 
-execute "Installing GPG keys so that RVM won't barf on installation" do
+execute "Installing GPG keys" do
   #command "curl -sSL https://rvm.io/mpapis.asc | sudo gpg --import -"
   #command "curl -sSL https://rvm.io/pkuczynski.asc | sudo gpg --import -"
   command "sudo gpg2 --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
@@ -132,10 +132,31 @@ end
 # end
 
 # Install nginx systemd service file
-cookbook_file "/lib/systemd/system/nginx.service" do
-  source "nginx.service"
-  action :create
-  mode 0755
+# cookbook_file "/lib/systemd/system/nginx.service" do
+#   source "nginx.service"
+#   action :create
+#   mode 0755
+# end
+systemd_unit 'nginx.service' do
+  content <<-EOU.gsub(/^\s+/, '')
+  [Unit]
+  Description=The NGINX HTTP and reverse proxy server
+  After=syslog.target network.target remote-fs.target nss-lookup.target
+
+  [Service]
+  Type=forking
+  PIDFile=/opt/nginx/logs/nginx.pid
+  ExecStartPre=/opt/nginx/sbin/nginx -t
+  ExecStart=/opt/nginx/sbin/nginx
+  ExecReload=/opt/nginx/sbin/nginx -s reload
+  ExecStop=/bin/kill -s QUIT $MAINPID
+  PrivateTmp=true
+
+  [Install]
+  WantedBy=multi-user.target
+  EOU
+
+  action [:create, :enable]
 end
 
 # Add log rotation
@@ -251,9 +272,9 @@ end
 #   flags "-x"
 # end
 
-systemd_unit "nginx.service" do
-  action :reload
-end
+# systemd_unit "nginx.service" do
+#   action :reload
+# end
 
 service "nginx" do
   provider Chef::Provider::Service::Systemd
