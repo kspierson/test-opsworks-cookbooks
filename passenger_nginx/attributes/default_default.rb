@@ -4,7 +4,7 @@ default['passenger_nginx']['rvm']['rvm_shell'] = '/etc/profile.d/rvm.sh'
 
 # Nginx
 default['passenger_nginx']['nginx']['extra_configure_flags'] = ""
-default['passenger_nginx']['nginx']['worker_processes'] = 1
+default['passenger_nginx']['nginx']['worker_processes'] = 2
 default['passenger_nginx']['nginx']['worker_connections'] = 1024
 default['passenger_nginx']['nginx']['worker_rlimit_nofile'] = 4096
 default['passenger_nginx']['nginx']['user'] = 'root'
@@ -14,8 +14,8 @@ default['passenger_nginx']['nginx']['http2'] = false
 
 # Passenger
 default['passenger_nginx']['passenger']['version'] = '5.0.1'
-default['passenger_nginx']['passenger']['max_pool_size'] = 12
-default['passenger_nginx']['passenger']['min_instances'] = 12
+default['passenger_nginx']['passenger']['max_pool_size'] = 15
+default['passenger_nginx']['passenger']['min_instances'] = 1
 default['passenger_nginx']['passenger']['pool_idle_time'] = 300
 default['passenger_nginx']['passenger']['max_instances_per_app'] = 0
 default['passenger_nginx']['passenger']['rolling_restarts'] = nil
@@ -29,9 +29,3 @@ default['passenger_nginx']['passenger']['pre_start'] = []
 
 # Applications
 default['passenger_nginx']['apps'] = []
-
-# Node
-node.default['nodejs']['install_method'] = 'binary'
-node.default['nodejs']['version'] = '10.15.2'
-node.default['nodejs']['binary']['checksum'] = '65e66599b275e2c41a882610a841a990e0570ed03bfccc378e031c475a3dae52'
-

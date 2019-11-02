@@ -23,6 +23,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+include_recipe 'git'
+include_recipe 'nodejs'
 
 execute "yum update" do
   command "yum update"
@@ -30,7 +32,7 @@ execute "yum update" do
 end
 
 # Install basic packages
-%w(git curl gpg gcc gcc-c++ make glibc-devel openssl openssl-devel openssl-libs libcurl libcurl-devel pcre-devel).each do |pkg|
+%w(curl gpg gcc gcc-c++ make glibc-devel openssl openssl-devel openssl-libs libcurl libcurl-devel pcre-devel).each do |pkg|
   yum_package pkg
 end
 
@@ -250,6 +252,26 @@ node['passenger_nginx']['apps'].each do |app|
       not_if { File.directory? "/usr/local/rvm/gems/ruby-#{node['passenger_nginx']['ruby_version']}@#{app['ruby_gemset']}" }
     end
   end
+end
+
+# Download and deploy
+file '/root/.ssh/id_rsa' do
+  mode "#{node[:deploy]['preview_free_movies']['deploy_to']}"
+  content "#{node[:deploy]['preview_free_movies'][:scm][:ssh_key]}"
+end
+
+git '/var/www' do
+  repository "#{node[:deploy]['preview_free_movies'][:scm]['repository']}"
+  revision "#{node[:deploy]['preview_free_movies'][:scm]['revision']}"
+end
+
+# install NPM packages
+execute 'npm prune' do
+  cwd '/var/www'
+end
+
+execute 'npm install' do
+  cwd '/var/www'
 end
 
 # Restart/start nginx

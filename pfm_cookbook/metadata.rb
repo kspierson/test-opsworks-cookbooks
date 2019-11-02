@@ -1,4 +1,4 @@
-name             'pfm-cookbook'
+name             'pfm_cookbook'
 maintainer       'Ken Pierson'
 maintainer_email 'kspierson@gmail.com'
 license          'MIT'
