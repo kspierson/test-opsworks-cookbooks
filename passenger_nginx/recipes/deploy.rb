@@ -1,0 +1,45 @@
+# Install Node
+execute "Installing NodeJS" do
+  command "curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -"
+  command "sudo yum install -y nodejs"
+
+  user "root"
+  not_if { File.exists? "/usr/local/bin/node" }
+end
+
+# Download and deploy
+file '/root/.ssh/id_rsa' do
+  mode '0400'
+  content "#{node['deploy']['preview_free_movies']['scm']['ssh_key']}"
+end
+
+execute "Downloading and Deploying..." do
+  command "git clone -b #{node['deploy']['preview_free_movies']['scm']['revision']} --single-branch #{node['deploy']['preview_free_movies']['scm']['repository']} ."
+  command "sudo yum install -y nodejs"
+
+  user "root"
+  cwd "#{node['deploy']['preview_free_movies']['deploy_to']}"
+  not_if { File.exists? "/usr/local/bin/node" }
+end
+
+# git '/var/www' do
+#   repository "#{node['deploy']['preview_free_movies']['scm']['repository']}"
+#   revision "#{node['deploy']['preview_free_movies']['scm']['revision']}"
+# end
+
+# install NPM packages
+execute 'Installing NPM Packages' do
+  command 'npm prune'
+  command 'npm install'
+  cwd "#{node['deploy']['preview_free_movies']['deploy_to']}"
+end
+
+# start the server
+service "nginx" do
+  provider Chef::Provider::Service::Systemd
+  supports :status => true, :restart => true, :reload => true
+  action [ :enable, :start ]
+  not_if { File.exists? "/opt/nginx/logs/nginx.pid" }
+end
+
+
