@@ -7,40 +7,40 @@ execute "Installing NodeJS" do
   not_if { File.exists? "/usr/local/bin/node" }
 end
 
-if node[:deploy].nil?
-  Chef::Log.info("No deployment..")
-  node[:deploy].each do |app, deploy|
-      Chef::Log.info("deploy -#{ app }-")
-  end
-elsif
-  Chef::Log.info("Deployment Exists!!!")
-end
+# if node[:deploy].nil?
+#   Chef::Log.info("No deployment..")
+#   node[:deploy].each do |app, deploy|
+#       Chef::Log.info("deploy -#{ app }-")
+#   end
+# elsif
+#   Chef::Log.info("Deployment Exists!!!")
+# end
 
 # Download and deploy
 file '/root/.ssh/id_rsa' do
   mode '0400'
-  content "#{node['deploy']['preview_free_movies']['scm']['ssh_key']}"
+  content "#{deploy['preview_free_movies']['scm']['ssh_key']}"
 end
 
 execute "Downloading and Deploying..." do
-  command "git clone -b #{node['deploy']['preview_free_movies']['scm']['revision']} --single-branch #{node['deploy']['preview_free_movies']['scm']['repository']} ."
+  command "git clone -b #{deploy['preview_free_movies']['scm']['revision']} --single-branch #{deploy['preview_free_movies']['scm']['repository']} ."
   command "sudo yum install -y nodejs"
 
   user "root"
-  cwd "#{node['deploy']['preview_free_movies']['deploy_to']}"
+  cwd "#{deploy['preview_free_movies']['deploy_to']}"
   not_if { File.exists? "/usr/local/bin/node" }
 end
 
 # git '/var/www' do
-#   repository "#{node['deploy']['preview_free_movies']['scm']['repository']}"
-#   revision "#{node['deploy']['preview_free_movies']['scm']['revision']}"
+#   repository "#{deploy['preview_free_movies']['scm']['repository']}"
+#   revision "#{deploy['preview_free_movies']['scm']['revision']}"
 # end
 
 # install NPM packages
 execute 'Installing NPM Packages' do
   command 'npm prune'
   command 'npm install'
-  cwd "#{node['deploy']['preview_free_movies']['deploy_to']}"
+  cwd "#{deploy['preview_free_movies']['deploy_to']}"
 end
 
 # start the server
