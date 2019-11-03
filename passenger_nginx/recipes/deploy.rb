@@ -1,9 +1,20 @@
 app = search("aws_opsworks_app").first
 
+# # Install Node
+# execute "Installing NodeJS" do
+#   command "curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -"
+#   command "sudo yum install -y nodejs"
+
+#   user "root"
+#   not_if { File.exists? "/usr/local/bin/node" }
+# end
+
+# Install NVM and Node
 # Install Node
-execute "Installing NodeJS" do
-  command "curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -"
-  command "sudo yum install -y nodejs"
+execute "Installing NVM and Node" do
+  command "curl -sL https://rpm.nodesource.com/setup_12.x | bash -"
+  command "yum install -y nodejs"
+  command
 
   user "root"
   not_if { File.exists? "/usr/local/bin/node" }
