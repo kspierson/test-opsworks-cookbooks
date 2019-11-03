@@ -2,8 +2,8 @@ app = search("aws_opsworks_app").first
 
 # # Install Node
 # execute "Installing NodeJS" do
-#   command "curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -"
-#   command "sudo yum install -y nodejs"
+#   command "curl -sL https://rpm.nodesource.com/setup_12.x | bash -"
+#   command "yum install -y nodejs"
 
 #   user "root"
 #   not_if { File.exists? "/usr/local/bin/node" }
@@ -12,12 +12,14 @@ app = search("aws_opsworks_app").first
 # Install NVM and Node
 # Install Node
 execute "Installing NVM and Node" do
-  command "curl -sL https://rpm.nodesource.com/setup_12.x | bash -"
-  command "yum install -y nodejs"
-  command
+  command "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash"
+  command ". ~/.nvm/nvm.sh"
+  command "nvm install node 10.15.2"
+  output = shell_out!('node -v').stdout
+  Chef::Log.info(output)
 
   user "root"
-  not_if { File.exists? "/usr/local/bin/node" }
+  #not_if { File.exists? "/usr/local/bin/node" }
 end
 
 # if node
