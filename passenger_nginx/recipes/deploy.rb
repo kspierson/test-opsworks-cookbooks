@@ -11,10 +11,30 @@ app = search("aws_opsworks_app").first
 
 # Install NVM and Node
 # Install Node
-execute "Installing NVM and Node" do
+execute "Installing NVM" do
   command "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash"
   #command ". ~/.nvm/nvm.sh"
-  Chef::Log.info(shell_out!(". ~/.nvm/nvm.sh").stdout)
+  #Chef::Log.info(shell_out!(". ~/.nvm/nvm.sh").stdout)
+  #command "nvm install node 10.15.2"
+
+  user "root"
+  #not_if { File.exists? "/usr/local/bin/node" }
+end
+
+bash "Configuring NVM" do
+  code <<-EOF
+    cat <<EOF >> .bashrc
+    export NVM_DIR="$HOME/.nvm"
+    && \. "$NVM_DIR/nvm.sh"
+    && \. "$NVM_DIR/bash_completion"
+    EOF
+  EOF
+  user "root"
+  not_if { File.exists? "/opt/nginx/sbin/nginx" }
+end
+
+execute "Loading NVM and Installing Node" do
+  command ". ~/.nvm/nvm.sh"
   command "nvm install node 10.15.2"
 
   user "root"
