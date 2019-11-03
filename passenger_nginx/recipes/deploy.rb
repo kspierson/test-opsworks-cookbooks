@@ -7,6 +7,15 @@ execute "Installing NodeJS" do
   not_if { File.exists? "/usr/local/bin/node" }
 end
 
+if node[:deploy]?
+  Chef::Log.info("No deployment..")
+  node[:deploy].each do |app, deploy|
+      Chef::Log.info("deploy -#{ app }-")
+  end
+elsif
+  Chef::Log.info("Deployment Exists!!!")
+end
+
 # Download and deploy
 file '/root/.ssh/id_rsa' do
   mode '0400'
