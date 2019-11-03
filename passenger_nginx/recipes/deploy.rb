@@ -15,9 +15,6 @@ execute "Installing NVM and Node" do
   command "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash"
   command ". ~/.nvm/nvm.sh"
   command "nvm install node 10.15.2"
-  Chef::Log.info(shell_out!('nvm -v').stdout)
-  Chef::Log.info(shell_out!('nvm list').stdout)
-  Chef::Log.info(shell_out!('node -v').stdout)
 
   user "root"
   #not_if { File.exists? "/usr/local/bin/node" }
