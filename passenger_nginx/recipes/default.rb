@@ -264,7 +264,7 @@ end
 
 # Download and deploy
 file '/root/.ssh/id_rsa' do
-  mode 0400
+  mode '0400'
   content "#{node[:deploy]['preview_free_movies'][:scm][:ssh_key]}"
 end
 
