@@ -264,7 +264,7 @@ end
 
 # Download and deploy
 file '/root/.ssh/id_rsa' do
-  mode "#{node[:deploy]['preview_free_movies']['deploy_to']}"
+  mode 0400
   content "#{node[:deploy]['preview_free_movies'][:scm][:ssh_key]}"
 end
 
@@ -273,7 +273,7 @@ execute "Downloading and Deploying..." do
   command "sudo yum install -y nodejs"
 
   user "root"
-  cwd "/var/www"
+  cwd "#{node[:deploy]['preview_free_movies']['deploy_to']}"
   not_if { File.exists? "/usr/local/bin/node" }
 end
 
@@ -283,10 +283,10 @@ end
 # end
 
 # install NPM packages
-execute 'Install NPM Packages' do
+execute 'Installing NPM Packages' do
   command 'npm prune'
   command 'npm install'
-  cwd '/var/www'
+  cwd '#{node[:deploy]['preview_free_movies']['deploy_to']}'
 end
 
 # execute 'npm install' do
