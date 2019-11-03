@@ -1,5 +1,3 @@
-include_attribute "deploy"
-
 # Install Node
 execute "Installing NodeJS" do
   command "curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -"
@@ -9,14 +7,14 @@ execute "Installing NodeJS" do
   not_if { File.exists? "/usr/local/bin/node" }
 end
 
-# if node[:deploy].nil?
-#   Chef::Log.info("No deployment..")
-#   node[:deploy].each do |app, deploy|
-#       Chef::Log.info("deploy -#{ app }-")
-#   end
-# elsif
-#   Chef::Log.info("Deployment Exists!!!")
-# end
+if node
+  Chef::Log.info("Reading node...")
+  node.each do |app, deploy|
+      Chef::Log.info("node -#{ app }-")
+  end
+elsif
+  Chef::Log.info("NO NODE")
+end
 
 # Download and deploy
 file '/root/.ssh/id_rsa' do
