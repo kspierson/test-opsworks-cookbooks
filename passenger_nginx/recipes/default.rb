@@ -286,7 +286,7 @@ end
 execute 'Installing NPM Packages' do
   command 'npm prune'
   command 'npm install'
-  cwd '#{node[:deploy]['preview_free_movies']['deploy_to']}'
+  cwd "#{node[:deploy]['preview_free_movies']['deploy_to']}"
 end
 
 # execute 'npm install' do
