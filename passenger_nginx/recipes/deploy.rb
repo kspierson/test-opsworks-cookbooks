@@ -7,7 +7,7 @@ execute "Installing NodeJS" do
   not_if { File.exists? "/usr/local/bin/node" }
 end
 
-if node[:deploy]?
+if node[:deploy].nil?
   Chef::Log.info("No deployment..")
   node[:deploy].each do |app, deploy|
       Chef::Log.info("deploy -#{ app }-")
