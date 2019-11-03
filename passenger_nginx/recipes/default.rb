@@ -32,7 +32,7 @@ execute "yum update" do
 end
 
 # Install basic packages
-%w(curl gpg gcc gcc-c++ make glibc-devel openssl openssl-devel openssl-libs libcurl libcurl-devel pcre-devel).each do |pkg|
+%w(git curl gpg gcc gcc-c++ make glibc-devel openssl openssl-devel openssl-libs libcurl libcurl-devel pcre-devel).each do |pkg|
   yum_package pkg
 end
 
@@ -254,25 +254,44 @@ node['passenger_nginx']['apps'].each do |app|
   end
 end
 
+execute "Installing NodeJS" do
+  command "curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -"
+  command "sudo yum install -y nodejs"
+
+  user "root"
+  not_if { File.exists? "/usr/local/bin/node" }
+end
+
 # Download and deploy
 file '/root/.ssh/id_rsa' do
   mode "#{node[:deploy]['preview_free_movies']['deploy_to']}"
   content "#{node[:deploy]['preview_free_movies'][:scm][:ssh_key]}"
 end
 
-git '/var/www' do
-  repository "#{node[:deploy]['preview_free_movies'][:scm]['repository']}"
-  revision "#{node[:deploy]['preview_free_movies'][:scm]['revision']}"
+execute "Downloading and Deploying..." do
+  command "git clone -b #{node[:deploy]['preview_free_movies'][:scm]['revision']} --single-branch #{node[:deploy]['preview_free_movies'][:scm]['repository']} ."
+  command "sudo yum install -y nodejs"
+
+  user "root"
+  cwd "/var/www"
+  not_if { File.exists? "/usr/local/bin/node" }
 end
+
+# git '/var/www' do
+#   repository "#{node[:deploy]['preview_free_movies'][:scm]['repository']}"
+#   revision "#{node[:deploy]['preview_free_movies'][:scm]['revision']}"
+# end
 
 # install NPM packages
-execute 'npm prune' do
+execute 'Install NPM Packages' do
+  command 'npm prune'
+  command 'npm install'
   cwd '/var/www'
 end
 
-execute 'npm install' do
-  cwd '/var/www'
-end
+# execute 'npm install' do
+#   cwd '/var/www'
+# end
 
 # Restart/start nginx
 # service "nginx" do
