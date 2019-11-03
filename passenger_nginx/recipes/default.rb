@@ -23,8 +23,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-include_recipe 'git'
-include_recipe 'nodejs'
+# include_recipe 'git'
+# include_recipe 'nodejs'
 
 execute "yum update" do
   command "yum update"
