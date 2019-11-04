@@ -1,5 +1,27 @@
 app = search("aws_opsworks_app").first
 
+# Add deploy user to rvm
+execute "Download Node from source and unpack/cleanup" do
+  command "curl -O https://nodejs.org/dist/v12.13.0/node-v12.13.0-linux-x64.tar.xz"
+  command "tar -xvf node-v4.6.0.tar.gz && rm node-v4.6.0.tar.gz"
+  user "root"
+end
+
+# Add deploy user to rvm
+execute "Configure, Make, and Install Node" do
+  command "./configure"
+  command "make"
+  command "sudo make install"
+  cwd "node-v12.13.0"
+  user "root"
+end
+
+# Test installation
+execute "Test Installation" do
+  Chef::Log.info(shell_out!("sudo node -v").stdout)
+  Chef::Log.info(shell_out!("node -v").stdout)
+end
+
 # Install Node
 # execute "Installing NodeJS" do
 #   command "rm -f /etc/yum.repos.d/nodesource-el.repo"
@@ -16,15 +38,15 @@ app = search("aws_opsworks_app").first
 
 # Install NVM and Node
 # Install Node
-execute "Installing NVM" do
-  command "curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash"
-  command ". ~/.nvm/nvm.sh"
-  #Chef::Log.info(shell_out!(". ~/.nvm/nvm.sh").stdout)
-  command "nvm install 10.15.2"
+# execute "Installing NVM" do
+#   command "curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash"
+#   command ". ~/.nvm/nvm.sh"
+#   #Chef::Log.info(shell_out!(". ~/.nvm/nvm.sh").stdout)
+#   command "nvm install 10.15.2"
 
-  user "root"
-  #not_if { File.exists? "/usr/local/bin/node" }
-end
+#   user "root"
+#   #not_if { File.exists? "/usr/local/bin/node" }
+# end
 
 # bash "Configuring NVM" do
 #   code <<-EOF
