@@ -130,6 +130,12 @@ end
 #   IdentitiesOnly yes # see NOTES below"
 # end
 
+directory "#{app['app_source']['deploy_to']}" do
+  mode 0755
+  action :create
+  not_if { File.directory? "#{app['app_source']['deploy_to']}" }
+end
+
 execute "Downloading and Deploying..." do
   #command "ssh-agent bash -c 'ssh-add /root/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} .'"
   command "GIT_SSH_COMMAND='/usr/bin/ssh -i /root/.ssh/id_rsa' git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} ."
