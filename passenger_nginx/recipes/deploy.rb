@@ -6,7 +6,7 @@ execute "Installing NodeJS" do
   command "yum clean all"
   command "yum -y remove nodejs"
   command "curl –silent –location https://rpm.nodesource.com/setup_12.x | sudo bash –"
-  command "yum -y install nodejs --enablerepo=nodesource"
+  command "yum -y install nodejs"
   #command "curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -"
   #command "yum install -y nodejs --enablerepo=nodesource"
 
