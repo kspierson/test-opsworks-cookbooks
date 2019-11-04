@@ -17,10 +17,10 @@ execute "Configure, Make, and Install Node" do
 end
 
 # Test installation
-execute "Test Installation" do
-  Chef::Log.info(shell_out!("sudo node -v").stdout)
-  Chef::Log.info(shell_out!("node -v").stdout)
-end
+# execute "Test Installation" do
+#   Chef::Log.info(shell_out!("sudo node -v").stdout)
+#   Chef::Log.info(shell_out!("node -v").stdout)
+# end
 
 # Install Node
 # execute "Installing NodeJS" do
