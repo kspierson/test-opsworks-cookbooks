@@ -49,7 +49,7 @@ execute "Installing NVM" do
   #not_if { File.exists? "/usr/local/bin/node" }
 end
 
-execute "LOG DIR" do
+execute "ls -la" do
   Chef::Log.info(shell_out!("ls -la").stdout)
 
   user "root"
