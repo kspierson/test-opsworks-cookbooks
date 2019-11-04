@@ -50,7 +50,7 @@ execute "Installing NVM" do
 end
 
 execute "Configuring NVM" do
-  command "curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash"
+  command ". ~/.nvm/nvm.sh"
 
   user "root"
   #not_if { File.exists? "/usr/local/bin/node" }
