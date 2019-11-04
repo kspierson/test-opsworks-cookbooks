@@ -130,18 +130,18 @@ end
 #   IdentitiesOnly yes # see NOTES below"
 # end
 
-# directory app['app_source']['deploy_to'] do
-#   mode 0755
-#   action :create
-#   not_if { File.directory? app['app_source']['deploy_to'] }
-# end
-
-execute "Downloading and Deploying..." do
-  command "mkdir #{app['app_source']['deploy_to']}"
-
-  user "root"
-  not_if { File.directory? "#{app['app_source']['deploy_to']}" }
+directory "#{app['app_source']['document_root']}" do
+  mode 0755
+  action :create
+  not_if { File.directory? "#{app['app_source']['document_root']}" }
 end
+
+# execute "Creating directory..." do
+#   command "mkdir #{app['app_source']['document_root']}"
+
+#   user "root"
+#   not_if { File.directory? "#{app['app_source']['document_root']}" }
+# end
 
 execute "Downloading and Deploying..." do
   #command "ssh-agent bash -c 'ssh-add /root/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} .'"
@@ -149,7 +149,7 @@ execute "Downloading and Deploying..." do
   #command "git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} ."
 
   user "root"
-  cwd "#{app['app_source']['deploy_to']}"
+  cwd "#{app['app_source']['document_root']}"
   #not_if { File.exists? "/usr/local/bin/node" }
 end
 
