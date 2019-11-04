@@ -49,25 +49,41 @@ execute "Installing NVM" do
   #not_if { File.exists? "/usr/local/bin/node" }
 end
 
-execute "Configuring NVM" do
-  command ". ~/.nvm/nvm.sh"
-
-  user "root"
-  #not_if { File.exists? "/usr/local/bin/node" }
-end
-
 execute "LOG DIR" do
-  Chef::Log.info(shell_out!(". ~/.nvm/nvm.sh").stdout)
+  Chef::Log.info(shell_out!("ls -la").stdout)
 
   user "root"
 end
 
-execute "Installing Node with NVM" do
-  command "nvm install 10.15.2"
+bash "Install NodeJS" do
+  code <<-EOC
+    source ~/.nvm/nvm.sh
+    nvm install 10.15.2
+  EOC
 
   user "root"
-  #not_if { File.exists? "/usr/local/bin/node" }
+  # creates "/usr/local/nvm/#{node['nodejs']['version']}"
 end
+
+# execute "Configuring NVM" do
+#   command ". ~/.nvm/nvm.sh"
+
+#   user "root"
+#   #not_if { File.exists? "/usr/local/bin/node" }
+# end
+
+# execute "LOG DIR" do
+#   Chef::Log.info(shell_out!("ls -la").stdout)
+
+#   user "root"
+# end
+
+# execute "Installing Node with NVM" do
+#   command "nvm install 10.15.2"
+
+#   user "root"
+#   #not_if { File.exists? "/usr/local/bin/node" }
+# end
 
 # bash "Configuring NVM" do
 #   code <<-EOF
