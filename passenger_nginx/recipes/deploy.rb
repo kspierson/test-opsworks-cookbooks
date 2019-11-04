@@ -144,15 +144,21 @@ end
 #   not_if { File.directory? "#{app['app_source']['document_root']}" }
 # end
 
-execute "Downloading and Deploying..." do
+execute "Adding SSH key" do
   #command "ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts"
   command "ssh -T git@gitlab.com"
-  command "ssh-agent bash -c 'ssh-add /root/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} .'"
+
+  user "root"
+  #not_if { File.exists? "/usr/local/bin/node" }
+end
+
+execute "Downloading and Deploying..." do
+  command "ssh-agent bash -c 'ssh-add /root/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} #{app['attributes']['document_root']}'"
   #command "GIT_SSH_COMMAND=\"ssh -i /root/.ssh/id_rsa\" git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} ."
   #command "git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} ."
 
   user "root"
-  cwd "#{app['attributes']['document_root']}"
+  #cwd "#{app['attributes']['document_root']}"
   #not_if { File.exists? "/usr/local/bin/node" }
 end
 
