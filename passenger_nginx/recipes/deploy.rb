@@ -3,7 +3,7 @@ app = search("aws_opsworks_app").first
 # Add deploy user to rvm
 execute "Download Node from source and unpack/cleanup" do
   command "curl -O https://nodejs.org/dist/v12.13.0/node-v12.13.0-linux-x64.tar.xz"
-  command "tar -xvf node-v4.6.0.tar.gz && rm node-v4.6.0.tar.gz"
+  command "tar -xvf node-v12.13.0.tar.gz && rm node-v12.13.0.tar.gz"
   user "root"
 end
 
