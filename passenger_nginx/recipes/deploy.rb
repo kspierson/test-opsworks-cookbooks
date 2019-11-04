@@ -110,12 +110,12 @@ end
 #   Chef::Log.info("NO NODE")
 # end
 
-execute "ls -la" do
-  Chef::Log.info(shell_out!("ls -la").stdout)
-  Chef::Log.info(shell_out!("which node").stdout)
+# execute "ls -la" do
+#   Chef::Log.info(shell_out!("ls -la").stdout)
+#   Chef::Log.info(shell_out!("which node").stdout)
 
-  user "root"
-end
+#   user "root"
+# end
 
 # Download and deploy
 file '/root/.ssh/id_rsa' do
