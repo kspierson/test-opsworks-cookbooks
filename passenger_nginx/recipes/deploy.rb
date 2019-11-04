@@ -130,10 +130,17 @@ end
 #   IdentitiesOnly yes # see NOTES below"
 # end
 
-directory app['app_source']['deploy_to'] do
-  mode 0755
-  action :create
-  not_if { File.directory? app['app_source']['deploy_to'] }
+# directory app['app_source']['deploy_to'] do
+#   mode 0755
+#   action :create
+#   not_if { File.directory? app['app_source']['deploy_to'] }
+# end
+
+execute "Downloading and Deploying..." do
+  command "mkdir #{app['app_source']['deploy_to']}"
+
+  user "root"
+  not_if { File.directory? "#{app['app_source']['deploy_to']}" }
 end
 
 execute "Downloading and Deploying..." do
