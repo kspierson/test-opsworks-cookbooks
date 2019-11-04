@@ -2,7 +2,7 @@ app = search("aws_opsworks_app").first
 
 # Install Node
 execute "Installing NodeJS" do
-  command "curl -sL https://rpm.nodesource.com/setup_12.x | bash -"
+  command "curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -"
   command "yum install -y nodejs --enablerepo=nodesource"
 
   user "root"
