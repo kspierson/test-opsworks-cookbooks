@@ -57,6 +57,7 @@ execute "Configuring NVM" do
 end
 
 execute "Installing Node with NVM" do
+  Chef::Log.info("ls -la")
   command "nvm install 10.15.2"
 
   user "root"
