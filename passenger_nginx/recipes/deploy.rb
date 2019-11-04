@@ -1,13 +1,13 @@
 app = search("aws_opsworks_app").first
 
-# # Install Node
-# execute "Installing NodeJS" do
-#   command "curl -sL https://rpm.nodesource.com/setup_12.x | bash -"
-#   command "yum install -y nodejs"
+# Install Node
+execute "Installing NodeJS" do
+  command "curl -sL https://rpm.nodesource.com/setup_12.x | bash -"
+  command "yum install -y nodejs --enablerepo=nodesource"
 
-#   user "root"
-#   not_if { File.exists? "/usr/local/bin/node" }
-# end
+  user "root"
+  not_if { File.exists? "/usr/local/bin/node" }
+end
 
 # Install NVM and Node
 # Install Node
@@ -31,19 +31,19 @@ app = search("aws_opsworks_app").first
 #   not_if { File.exists? "/opt/nginx/sbin/nginx" }
 # end
 
-execute "Loading NVM and Installing Node" do
-  command "wget https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh /home/ec2-user/install.sh"
-  command "NVM_DIR=/usr/bin"
-  command "bash /home/ec2-user/install.sh"
-  command "mv /usr/bin/nvm.sh /usr/bin/nvm"
+# execute "Loading NVM and Installing Node" do
+#   command "wget https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh /home/ec2-user/install.sh"
+#   command "NVM_DIR=/usr/bin"
+#   command "bash /home/ec2-user/install.sh"
+#   command "mv /usr/bin/nvm.sh /usr/bin/nvm"
   
-  #nvm install 4.3"
-  #command ". ~/.nvm/nvm.sh"
-  command "nvm install node 10.15.2"
+#   #nvm install 4.3"
+#   #command ". ~/.nvm/nvm.sh"
+#   command "nvm install node 10.15.2"
 
-  user "root"
-  #not_if { File.exists? "/usr/local/bin/node" }
-end
+#   user "root"
+#   #not_if { File.exists? "/usr/local/bin/node" }
+# end
 
 # if node
 #   Chef::Log.info("Reading node...")
