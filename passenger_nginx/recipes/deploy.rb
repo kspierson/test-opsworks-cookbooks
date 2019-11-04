@@ -131,7 +131,8 @@ end
 # end
 
 execute "Downloading and Deploying..." do
-  command "ssh-agent bash -c 'ssh-add /root/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} .'"
+  #command "ssh-agent bash -c 'ssh-add /root/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} .'"
+  command "GIT_SSH_COMMAND='/usr/bin/ssh -i /root/.ssh/id_rsa' git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} ."
   #command "git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} ."
 
   user "root"
