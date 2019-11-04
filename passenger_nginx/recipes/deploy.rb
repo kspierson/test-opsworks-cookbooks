@@ -1,30 +1,30 @@
 app = search("aws_opsworks_app").first
 
 # Install Node
-execute "Installing NodeJS" do
-  command "rm -f /etc/yum.repos.d/nodesource-el.repo"
-  command "yum clean all"
-  command "yum -y remove nodejs"
-  command "curl –silent –location https://rpm.nodesource.com/setup_12.x | sudo bash –"
-  command "yum -y install nodejs"
-  #command "curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -"
-  #command "yum install -y nodejs --enablerepo=nodesource"
+# execute "Installing NodeJS" do
+#   command "rm -f /etc/yum.repos.d/nodesource-el.repo"
+#   command "yum clean all"
+#   command "yum -y remove nodejs"
+#   command "curl –silent –location https://rpm.nodesource.com/setup_12.x | sudo bash –"
+#   command "yum -y install nodejs"
+#   #command "curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -"
+#   #command "yum install -y nodejs --enablerepo=nodesource"
 
-  user "root"
-  not_if { File.exists? "/usr/local/bin/node" }
-end
+#   user "root"
+#   not_if { File.exists? "/usr/local/bin/node" }
+# end
 
 # Install NVM and Node
 # Install Node
-# execute "Installing NVM" do
-#   command "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash"
-#   #command ". ~/.nvm/nvm.sh"
-#   #Chef::Log.info(shell_out!(". ~/.nvm/nvm.sh").stdout)
-#   #command "nvm install node 10.15.2"
+execute "Installing NVM" do
+  command "curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash"
+  command ". ~/.nvm/nvm.sh"
+  #Chef::Log.info(shell_out!(". ~/.nvm/nvm.sh").stdout)
+  command "nvm install 10.15.2"
 
-#   user "root"
-#   #not_if { File.exists? "/usr/local/bin/node" }
-# end
+  user "root"
+  #not_if { File.exists? "/usr/local/bin/node" }
+end
 
 # bash "Configuring NVM" do
 #   code <<-EOF
