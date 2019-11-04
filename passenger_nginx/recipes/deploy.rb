@@ -102,7 +102,6 @@ end
 
 execute "Downloading and Deploying..." do
   command "git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} ."
-  command "sudo yum install -y nodejs"
 
   user "root"
   cwd "#{app['app_source']['deploy_to']}"
