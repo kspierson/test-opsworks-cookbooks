@@ -49,12 +49,6 @@ execute "Installing NVM" do
   #not_if { File.exists? "/usr/local/bin/node" }
 end
 
-execute "ls -la" do
-  Chef::Log.info(shell_out!("ls -la").stdout)
-
-  user "root"
-end
-
 bash "Install NodeJS" do
   code <<-EOC
     source ~/.nvm/nvm.sh
@@ -116,6 +110,13 @@ end
 #   Chef::Log.info("NO NODE")
 # end
 
+execute "ls -la" do
+  Chef::Log.info(shell_out!("ls -la").stdout)
+  Chef::Log.info(shell_out!("which node").stdout)
+
+  user "root"
+end
+
 # Download and deploy
 file '/root/.ssh/id_rsa' do
   mode '0400'
@@ -144,8 +145,8 @@ end
 # end
 
 execute "Downloading and Deploying..." do
-  #command "ssh-agent bash -c 'ssh-add /root/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} .'"
-  command "GIT_SSH_COMMAND='/usr/bin/ssh -i /root/.ssh/id_rsa' git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} ."
+  command "ssh-agent bash -c 'ssh-add /root/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} .'"
+  #command "GIT_SSH_COMMAND='/usr/bin/ssh -i /root/.ssh/id_rsa' git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} ."
   #command "git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} ."
 
   user "root"
