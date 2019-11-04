@@ -56,8 +56,13 @@ execute "Configuring NVM" do
   #not_if { File.exists? "/usr/local/bin/node" }
 end
 
+execute "LOG DIR" do
+  Chef::Log.info(shell_out!(". ~/.nvm/nvm.sh").stdout)
+
+  user "root"
+end
+
 execute "Installing Node with NVM" do
-  Chef::Log.info("ls -la")
   command "nvm install 10.15.2"
 
   user "root"
