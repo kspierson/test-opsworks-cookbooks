@@ -110,13 +110,6 @@ end
 #   Chef::Log.info("NO NODE")
 # end
 
-# execute "ls -la" do
-#   Chef::Log.info(shell_out!("ls -la").stdout)
-#   Chef::Log.info(shell_out!("which node").stdout)
-
-#   user "root"
-# end
-
 # Download and deploy
 file '/root/.ssh/id_rsa' do
   mode '0400'
@@ -137,6 +130,15 @@ directory "#{app['attributes']['document_root']}" do
   not_if { File.directory? "#{app['attributes']['document_root']}" }
 end
 
+execute "ls -la" do
+  Chef::Log.info(shell_out!("ls -la").stdout)
+  Chef::Log.info(shell_out!("ls -la /root/").stdout)
+  Chef::Log.info(shell_out!("ls -la /root/.ssh/").stdout)
+  # Chef::Log.info(shell_out!("which node").stdout)
+
+  user "root"
+end
+
 # execute "Creating directory..." do
 #   command "mkdir #{app['app_source']['document_root']}"
 
@@ -144,13 +146,13 @@ end
 #   not_if { File.directory? "#{app['app_source']['document_root']}" }
 # end
 
-execute "Adding SSH key" do
-  #command "ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts"
-  command "ssh -T git@gitlab.com"
+# execute "Adding SSH key" do
+#   #command "ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts"
+#   command "ssh -T git@gitlab.com"
 
-  user "root"
-  #not_if { File.exists? "/usr/local/bin/node" }
-end
+#   user "root"
+#   #not_if { File.exists? "/usr/local/bin/node" }
+# end
 
 execute "Downloading and Deploying..." do
   command "ssh-agent bash -c 'ssh-add /root/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} #{app['attributes']['document_root']}'"
