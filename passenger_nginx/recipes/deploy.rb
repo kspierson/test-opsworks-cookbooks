@@ -122,12 +122,21 @@ file '/root/.ssh/id_rsa' do
   content "#{app['app_source']['ssh_key']}"
 end
 
+# file '/root/.ssh/config' do
+#   mode '0400'
+#   content "Host gitserv
+#   Hostname remote.server.com
+#   IdentityFile ~/.ssh/id_rsa.github
+#   IdentitiesOnly yes # see NOTES below"
+# end
+
 execute "Downloading and Deploying..." do
+  command "ssh-agent bash -c 'ssh-add /root/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} .'"
   command "git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} ."
 
   user "root"
   cwd "#{app['app_source']['deploy_to']}"
-  not_if { File.exists? "/usr/local/bin/node" }
+  #not_if { File.exists? "/usr/local/bin/node" }
 end
 
 # git '/var/www' do
