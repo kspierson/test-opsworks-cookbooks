@@ -2,9 +2,10 @@ app = search("aws_opsworks_app").first
 
 execute "Installing NVM" do
   command "curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash"
+  environment ({'HOME' => '/home/ec2-user', 'USER' => 'ec2-user'})
 
   user "ec2-user"
-  not_if { File.exists? "/home/ec2-user.nvm" }
+  not_if { File.exists? "/home/ec2-user/.nvm" }
 end
 
 bash "Install NodeJS" do
@@ -14,7 +15,7 @@ bash "Install NodeJS" do
   EOC
 
   user "ec2-user"
-  not_if { File.exists? "/home/ec2-user.nvm" }
+  not_if { File.exists? "/home/ec2-user/.nvm" }
   # creates "/usr/local/nvm/#{node['nodejs']['version']}"
 end
 
