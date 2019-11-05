@@ -31,9 +31,11 @@ end
 
 execute "ls -la" do
   # Chef::Log.info(shell_out!("ls -la").stdout)
-  # Chef::Log.info(shell_out!("ls -la /root/").stdout)
-  # Chef::Log.info(shell_out!("ls -la /root/.ssh/").stdout)
-  Chef::Log.info(shell_out!("sudo which node").stdout)
+  Chef::Log.info(shell_out!("ls -la /usr/bin").stdout)
+  Chef::Log.info(shell_out!("ls -la /usr/local/bin").stdout)
+  Chef::Log.info(shell_out!("ls -la ~/.nvm").stdout)
+  Chef::Log.info(shell_out!("ls -la ~").stdout)
+  #Chef::Log.info(shell_out!("sudo which node").stdout)
 
   user "root"
 end
