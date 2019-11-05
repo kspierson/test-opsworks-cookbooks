@@ -4,7 +4,7 @@ execute "Installing NVM" do
   command "curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash"
 
   user "ec2-user"
-  #not_if { File.exists? "/usr/local/bin/node" }
+  not_if { File.exists? "/ec2-user/.nvm" }
 end
 
 bash "Install NodeJS" do
@@ -14,6 +14,7 @@ bash "Install NodeJS" do
   EOC
 
   user "ec2-user"
+  not_if { File.exists? "/ec2-user/.nvm" }
   # creates "/usr/local/nvm/#{node['nodejs']['version']}"
 end
 
