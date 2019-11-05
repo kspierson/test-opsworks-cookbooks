@@ -20,7 +20,7 @@ bash "Install NodeJS" do
 end
 
 # Download and deploy
-file '/home/ec2-user.ssh/id_rsa' do
+file '~/.ssh/id_rsa' do
   mode '0400'
   content "#{app['app_source']['ssh_key']}"
 end
@@ -34,9 +34,9 @@ end
 execute "ls -la" do
   Chef::Log.info(shell_out!("ls -la").stdout)
   Chef::Log.info(shell_out!("ls -la /home").stdout)
-  #Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
-  #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
-  Chef::Log.info(shell_out!("ls -la /usr").stdout)
+  Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
+  Chef::Log.info(shell_out!("ls -la /usr/local/bin").stdout)
+  Chef::Log.info(shell_out!("ls -la /usr/bin").stdout)
   Chef::Log.info(shell_out!("ls -la ~").stdout)
   #Chef::Log.info(shell_out!("nvm which node").stdout)
 
@@ -44,14 +44,14 @@ execute "ls -la" do
 end
 
 execute "Adding SSH key" do
-  command "ssh-keyscan -H gitlab.com >> home/ec2-user.ssh/known_hosts"
+  command "ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts"
 
   user "ec2-user"
   #not_if { File.exists? "/usr/local/bin/node" }
 end
 
 execute "Downloading and Deploying..." do
-  command "ssh-agent bash -c 'ssh-add /home/ec2-user.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} #{app['attributes']['document_root']}'"
+  command "ssh-agent bash -c 'ssh-add ~/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} #{app['attributes']['document_root']}'"
   #command "GIT_SSH_COMMAND=\"ssh -i /root/.ssh/id_rsa\" git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} ."
 
   user "ec2-user"
