@@ -33,7 +33,7 @@ execute "ls -la" do
   # Chef::Log.info(shell_out!("ls -la").stdout)
   # Chef::Log.info(shell_out!("ls -la /usr/bin").stdout)
   # Chef::Log.info(shell_out!("ls -la /usr/local/bin").stdout)
-  Chef::Log.info(shell_out!("ls -la ~/.nvm/versions/node/").stdout)
+  Chef::Log.info(shell_out!("ls -la ~/.nvm/versions/").stdout)
   # Chef::Log.info(shell_out!("ls -la ~").stdout)
   #Chef::Log.info(shell_out!("nvm which node").stdout)
 
