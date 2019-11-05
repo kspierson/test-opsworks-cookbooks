@@ -19,8 +19,15 @@ bash "Install NodeJS" do
   # creates "/usr/local/nvm/#{node['nodejs']['version']}"
 end
 
+directory "/home/ec2-user/.ssh" do
+  mode 0700
+  action :create
+  user "ec2-user"
+  not_if { File.directory? "/home/ec2-user/.ssh" }
+end
+
 # Download and deploy
-file '/usr/local/bin/.ssh/id_rsa' do
+file '/home/ec2-user/.ssh/id_rsa' do
   mode '0400'
   content "#{app['app_source']['ssh_key']}"
 end
@@ -44,14 +51,14 @@ execute "ls -la" do
 end
 
 execute "Adding SSH key" do
-  command "ssh-keyscan -H gitlab.com >> /usr/local/bin/.ssh/known_hosts"
+  command "ssh-keyscan -H gitlab.com >> /home/ec2-user/.ssh/known_hosts"
 
   user "ec2-user"
   #not_if { File.exists? "/usr/local/bin/node" }
 end
 
 execute "Downloading and Deploying..." do
-  command "ssh-agent bash -c 'ssh-add /usr/local/bin/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} #{app['attributes']['document_root']}'"
+  command "ssh-agent bash -c 'ssh-add /home/ec2-user/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} #{app['attributes']['document_root']}'"
   #command "GIT_SSH_COMMAND=\"ssh -i /root/.ssh/id_rsa\" git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} ."
 
   user "ec2-user"
