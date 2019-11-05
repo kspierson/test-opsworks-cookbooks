@@ -70,6 +70,7 @@ end
 execute 'Installing NPM Packages' do
   #command 'npm prune'
   command 'npm install'
+  environment ({'HOME' => '/home/ec2-user', 'USER' => 'ec2-user'})
   
   cwd "#{app['attributes']['document_root']}"
   user "ec2-user"
