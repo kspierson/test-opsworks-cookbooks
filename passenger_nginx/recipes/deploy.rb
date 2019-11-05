@@ -31,11 +31,12 @@ directory "#{app['attributes']['document_root']}" do
 end
 
 execute "ls -la" do
-  #Chef::Log.info(shell_out!("ls -la").stdout)
-  #Chef::Log.info(shell_out!("ls -la /usr/bin").stdout)
-  Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
-  Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions").stdout)
-  # Chef::Log.info(shell_out!("ls -la ~").stdout)
+  Chef::Log.info(shell_out!("ls -la").stdout)
+  Chef::Log.info(shell_out!("ls -la /home").stdout)
+  #Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
+  #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
+  Chef::Log.info(shell_out!("ls -la /usr").stdout)
+  Chef::Log.info(shell_out!("ls -la ~").stdout)
   #Chef::Log.info(shell_out!("nvm which node").stdout)
 
   user "ec2-user"
