@@ -161,7 +161,7 @@ execute "Downloading and Deploying..." do
 
   user "root"
   #cwd "#{app['attributes']['document_root']}"
-  #not_if { File.exists? "/usr/local/bin/node" }
+  not_if { File.directory? "#{app['attributes']['document_root']}" }
 end
 
 # git '/var/www' do
