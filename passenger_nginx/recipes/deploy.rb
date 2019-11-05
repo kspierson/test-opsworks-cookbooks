@@ -39,12 +39,12 @@ directory "#{app['attributes']['document_root']}" do
 end
 
 execute "ls -la" do
-  Chef::Log.info(shell_out!("ls -la").stdout)
-  Chef::Log.info(shell_out!("ls -la /home").stdout)
+  #Chef::Log.info(shell_out!("ls -la").stdout)
+  #Chef::Log.info(shell_out!("ls -la /home").stdout)
   Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
-  Chef::Log.info(shell_out!("ls -la /usr/local/bin").stdout)
-  Chef::Log.info(shell_out!("ls -la /usr/bin").stdout)
-  Chef::Log.info(shell_out!("ls -la ~").stdout)
+  Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
+  Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2").stdout)
+  Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2/bin").stdout)
   #Chef::Log.info(shell_out!("nvm which node").stdout)
 
   user "ec2-user"
@@ -64,6 +64,13 @@ execute "Downloading and Deploying..." do
   user "ec2-user"
   #cwd "#{app['attributes']['document_root']}"
   not_if { File.directory? "#{app['attributes']['document_root']}" }
+end
+
+execute 'Symlink Node Installation' do
+  #command 'npm prune'
+  command 'ln -sf /home/ec2-user/.nvm/versions/node/v10.15.2/bin/node /usr/local/bin/node'
+  
+  user "root"
 end
 
 # install NPM packages
