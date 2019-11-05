@@ -44,8 +44,8 @@ execute "ls -la" do
   #Chef::Log.info(shell_out!("ls -la /home").stdout)
   Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
   Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
-  Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2").stdout)
-  Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2/bin").stdout)
+  #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2").stdout)
+  #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2/bin").stdout)
   #Chef::Log.info(shell_out!("nvm which node").stdout)
 
   user "ec2-user"
