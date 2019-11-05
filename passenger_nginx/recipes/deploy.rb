@@ -10,7 +10,7 @@ end
 
 bash "Install NodeJS" do
   code <<-EOC
-    source ~/.nvm/nvm.sh
+    source /usr/local/bin/.nvm/nvm.sh
     nvm install 10.15.2
   EOC
 
@@ -20,7 +20,7 @@ bash "Install NodeJS" do
 end
 
 # Download and deploy
-file '~/.ssh/id_rsa' do
+file '/usr/local/bin/.ssh/id_rsa' do
   mode '0400'
   content "#{app['app_source']['ssh_key']}"
 end
@@ -44,14 +44,14 @@ execute "ls -la" do
 end
 
 execute "Adding SSH key" do
-  command "ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts"
+  command "ssh-keyscan -H gitlab.com >> /usr/local/bin/.ssh/known_hosts"
 
   user "ec2-user"
   #not_if { File.exists? "/usr/local/bin/node" }
 end
 
 execute "Downloading and Deploying..." do
-  command "ssh-agent bash -c 'ssh-add ~/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} #{app['attributes']['document_root']}'"
+  command "ssh-agent bash -c 'ssh-add /usr/local/bin/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} #{app['attributes']['document_root']}'"
   #command "GIT_SSH_COMMAND=\"ssh -i /root/.ssh/id_rsa\" git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} ."
 
   user "ec2-user"
