@@ -173,7 +173,9 @@ end
 execute 'Installing NPM Packages' do
   command 'npm prune'
   command 'npm install'
+  
   cwd "#{app['attributes']['document_root']}"
+  user "root"
 end
 
 # start the server
