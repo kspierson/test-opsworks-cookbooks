@@ -10,9 +10,10 @@ end
 
 bash "Install NodeJS" do
   code <<-EOC
-    source /usr/local/bin/.nvm/nvm.sh
+    source /home/ec2-user/.nvm/nvm.sh
     nvm install 10.15.2
   EOC
+  environment ({'HOME' => '/home/ec2-user', 'USER' => 'ec2-user'})
 
   user "ec2-user"
   not_if { File.exists? "/home/ec2-user/.nvm" }
