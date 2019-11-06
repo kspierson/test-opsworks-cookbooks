@@ -39,18 +39,6 @@ directory "#{app['attributes']['document_root']}" do
   not_if { File.directory? "#{app['attributes']['document_root']}" }
 end
 
-execute "ls -la" do
-  #Chef::Log.info(shell_out!("ls -la").stdout)
-  #Chef::Log.info(shell_out!("ls -la /home").stdout)
-  Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
-  Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
-  #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2").stdout)
-  #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2/bin").stdout)
-  #Chef::Log.info(shell_out!("nvm which node").stdout)
-
-  user "ec2-user"
-end
-
 execute "Adding SSH key" do
   command "ssh-keyscan -H gitlab.com >> /home/ec2-user/.ssh/known_hosts"
 
@@ -95,6 +83,21 @@ bash "Install NPM Packages" do
   user "#{app['attributes']['document_root']}"
   not_if { File.exists? "/home/ec2-user/.nvm" }
   # creates "/usr/local/nvm/#{node['nodejs']['version']}"
+end
+
+execute "ls -la" do
+  #Chef::Log.info(shell_out!("ls -la").stdout)
+  #Chef::Log.info(shell_out!("ls -la /home").stdout)
+  Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
+  Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
+  Chef::Log.info(shell_out!("ls -la /usr/bin").stdout)
+  Chef::Log.info(shell_out!("ls -la /usr/local/bin").stdout)
+  Chef::Log.info(shell_out!("cat /home/ec2-user/.bashrc").stdout)
+  #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2").stdout)
+  #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2/bin").stdout)
+  Chef::Log.info(shell_out!("ls -la /var/www").stdout)
+
+  user "ec2-user"
 end
 
 # start the server
