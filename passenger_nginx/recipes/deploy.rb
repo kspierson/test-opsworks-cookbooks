@@ -49,6 +49,7 @@ end
 execute "Downloading and Deploying..." do
   command "ssh-agent bash -c 'ssh-add /home/ec2-user/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} #{app['attributes']['document_root']}'"
   #command "GIT_SSH_COMMAND=\"ssh -i /root/.ssh/id_rsa\" git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} ."
+  environment ({'HOME' => '/home/ec2-user', 'USER' => 'ec2-user'})
 
   user "ec2-user"
   #cwd "#{app['attributes']['document_root']}"
@@ -85,26 +86,26 @@ bash "Install NPM Packages" do
   # creates "/usr/local/nvm/#{node['nodejs']['version']}"
 end
 
-execute "ls -la" do
-  #Chef::Log.info(shell_out!("ls -la").stdout)
-  #Chef::Log.info(shell_out!("ls -la /home").stdout)
-  Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
-  Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
-  Chef::Log.info(shell_out!("ls -la /usr/bin").stdout)
-  Chef::Log.info(shell_out!("ls -la /usr/local/bin").stdout)
-  #Chef::Log.info(shell_out!("cat /home/ec2-user/.bashrc").stdout)
-  #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2").stdout)
-  #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2/bin").stdout)
+# execute "ls -la" do
+#   #Chef::Log.info(shell_out!("ls -la").stdout)
+#   #Chef::Log.info(shell_out!("ls -la /home").stdout)
+#   Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
+#   Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
+#   Chef::Log.info(shell_out!("ls -la /usr/bin").stdout)
+#   Chef::Log.info(shell_out!("ls -la /usr/local/bin").stdout)
+#   #Chef::Log.info(shell_out!("cat /home/ec2-user/.bashrc").stdout)
+#   #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2").stdout)
+#   #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2/bin").stdout)
 
-  user "ec2-user"
-end
+#   user "ec2-user"
+# end
 
 # start the server
 service "nginx" do
-  Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
-  Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
-  Chef::Log.info(shell_out!("ls -la /usr/bin").stdout)
-  Chef::Log.info(shell_out!("ls -la /usr/local/bin").stdout)
+  # Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
+  # Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
+  # Chef::Log.info(shell_out!("ls -la /usr/bin").stdout)
+  # Chef::Log.info(shell_out!("ls -la /usr/local/bin").stdout)
   Chef::Log.info(shell_out!("ls -la /var/www").stdout)
   provider Chef::Provider::Service::Systemd
   supports :status => true, :restart => true, :reload => true
