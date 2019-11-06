@@ -88,10 +88,10 @@ ruby_block 'LOGGING DIRECTORY STRUCTURE' do
   #Chef::Log.info(shell_out!("ls -la /home").stdout)
   #Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
     Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
-    Chef::Log.info(shell_out!("/usr/bin/node -v").stdout)
-    Chef::Log.info(shell_out!("echo $NODE_DIR").stdout)
+    Chef::Log.info(shell_out!("ls -la /etc").stdout)
+    #Chef::Log.info(shell_out!("echo $NODE_DIR").stdout)
     #Chef::Log.info(shell_out!("ls -la /var/www").stdout)
-  Chef::Log.info(shell_out!("cat /home/ec2-user/.bashrc").stdout)
+  Chef::Log.info(shell_out!("/usr/local/bin/node -v").stdout)
   #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2").stdout)
   #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2/bin").stdout)
   end
