@@ -14,9 +14,10 @@ file '/home/ec2-user/.ssh/id_rsa' do
 end
 
 directory "#{app['attributes']['document_root']}" do
+  owner 'ec2-user'
   mode 0755
   action :create
-  not_if { File.directory? "#{app['attributes']['document_root']}" }
+  #not_if { File.directory? "#{app['attributes']['document_root']}" }
 end
 
 execute "Adding SSH key" do
