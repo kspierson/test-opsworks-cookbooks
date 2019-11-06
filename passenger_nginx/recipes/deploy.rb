@@ -75,13 +75,26 @@ execute 'Symlink Node Installation' do
 end
 
 # install NPM packages
-execute 'Installing NPM Packages' do
-  #command 'npm prune'
-  command 'npm install'
-  environment ({'HOME' => '/home/ec2-user', 'USER' => 'ec2-user'})
+# execute 'Installing NPM Packages' do
+#   #command 'npm prune'
+#   command 'npm install'
+#   environment ({'HOME' => '/home/ec2-user', 'USER' => 'ec2-user'})
   
-  cwd "#{app['attributes']['document_root']}"
-  user "ec2-user"
+#   cwd "#{app['attributes']['document_root']}"
+#   user "ec2-user"
+# end
+
+bash "Install NPM Packages" do
+  code <<-EOC
+    source /home/ec2-user/.bashrc
+    npm install
+  EOC
+  environment ({'HOME' => '/home/ec2-user', 'USER' => 'ec2-user'})
+
+  cwd 
+  user "#{app['attributes']['document_root']}"
+  not_if { File.exists? "/home/ec2-user/.nvm" }
+  # creates "/usr/local/nvm/#{node['nodejs']['version']}"
 end
 
 # start the server
