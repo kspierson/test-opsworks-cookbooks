@@ -254,6 +254,26 @@ node['passenger_nginx']['apps'].each do |app|
   end
 end
 
+execute "Installing NVM" do
+  command "curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash"
+  environment ({'HOME' => '/home/ec2-user', 'USER' => 'ec2-user'})
+
+  user "ec2-user"
+  not_if { File.exists? "/home/ec2-user/.nvm" }
+end
+
+bash "Install NodeJS" do
+  code <<-EOC
+    source /home/ec2-user/.nvm/nvm.sh
+    nvm install 10.15.2
+  EOC
+  environment ({'HOME' => '/home/ec2-user', 'USER' => 'ec2-user'})
+
+  user "ec2-user"
+  not_if { File.exists? "/home/ec2-user/.nvm" }
+  # creates "/usr/local/nvm/#{node['nodejs']['version']}"
+end
+
 # execute "Installing NodeJS" do
 #   command "curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -"
 #   command "sudo yum install -y nodejs"
