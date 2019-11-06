@@ -36,6 +36,16 @@ execute "Downloading and Deploying..." do
   not_if { File.directory? "#{app['attributes']['document_root']}" }
 end
 
+execute "Downloading and Deploying..." do
+  command "ssh-agent bash -c 'ssh-add /home/ec2-user/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} #{app['attributes']['document_root']}'"
+  #command "GIT_SSH_COMMAND=\"ssh -i /root/.ssh/id_rsa\" git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} ."
+  environment ({'HOME' => '/home/ec2-user', 'USER' => 'ec2-user'})
+
+  user "ec2-user"
+  #cwd "#{app['attributes']['document_root']}"
+  not_if { File.directory? "#{app['attributes']['document_root']}/server" }
+end
+
 execute 'Symlink Node Installation' do
   #command 'npm prune'
   command 'ln -sf /home/ec2-user/.nvm/versions/node/v10.15.2/bin/node /usr/local/bin/node'
