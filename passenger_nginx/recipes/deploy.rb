@@ -9,6 +9,7 @@ end
 
 # Download and deploy
 file '/home/ec2-user/.ssh/id_rsa' do
+  owner 'ec2-user'
   mode '0400'
   content "#{app['app_source']['ssh_key']}"
 end
