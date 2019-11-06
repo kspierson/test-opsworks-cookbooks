@@ -100,13 +100,28 @@ end
 #   user "ec2-user"
 # end
 
+ruby_block 'LOGGING DIRECTORY STRUCTURE' do
+  block do
+      #Chef::Log.info(shell_out!("ls -la").stdout)
+  #Chef::Log.info(shell_out!("ls -la /home").stdout)
+  #Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
+  Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
+  Chef::Log.info(shell_out!("ls -la /usr/bin").stdout)
+  Chef::Log.info(shell_out!("ls -la /usr/local/bin").stdout)
+  Chef::Log.info(shell_out!("ls -la /var/www").stdout)
+  #Chef::Log.info(shell_out!("cat /home/ec2-user/.bashrc").stdout)
+  #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2").stdout)
+  #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2/bin").stdout)
+  end
+  action :run
+end
+
 # start the server
 service "nginx" do
   # Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
   # Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
   # Chef::Log.info(shell_out!("ls -la /usr/bin").stdout)
   # Chef::Log.info(shell_out!("ls -la /usr/local/bin").stdout)
-  Chef::Log.info(shell_out!("ls -la /var/www").stdout)
   provider Chef::Provider::Service::Systemd
   supports :status => true, :restart => true, :reload => true
   action [ :enable, :start ]
