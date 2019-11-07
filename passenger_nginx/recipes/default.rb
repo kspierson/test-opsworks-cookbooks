@@ -270,78 +270,7 @@ bash "Install NodeJS" do
   environment ({'HOME' => '/home/ec2-user', 'USER' => 'ec2-user'})
 
   user "ec2-user"
-  #not_if { File.exists? "/home/ec2-user/.nvm" }
+  not_if { File.exists? "/home/ec2-user/.nvm/versions/node/v10.15.2/bin/node" }
   # creates "/usr/local/nvm/#{node['nodejs']['version']}"
 end
-
-# execute "Installing NodeJS" do
-#   command "curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -"
-#   command "sudo yum install -y nodejs"
-
-#   user "root"
-#   not_if { File.exists? "/usr/local/bin/node" }
-# end
-
-# # Download and deploy
-# file '/root/.ssh/id_rsa' do
-#   mode '0400'
-#   content "#{node['deploy']['preview_free_movies']['scm']['ssh_key']}"
-# end
-
-# execute "Downloading and Deploying..." do
-#   command "git clone -b #{node['deploy']['preview_free_movies']['scm']['revision']} --single-branch #{node['deploy']['preview_free_movies']['scm']['repository']} ."
-#   command "sudo yum install -y nodejs"
-
-#   user "root"
-#   cwd "#{node['deploy']['preview_free_movies']['deploy_to']}"
-#   not_if { File.exists? "/usr/local/bin/node" }
-# end
-
-# # git '/var/www' do
-# #   repository "#{node['deploy']['preview_free_movies']['scm']['repository']}"
-# #   revision "#{node['deploy']['preview_free_movies']['scm']['revision']}"
-# # end
-
-# # install NPM packages
-# execute 'Installing NPM Packages' do
-#   command 'npm prune'
-#   command 'npm install'
-#   cwd "#{node['deploy']['preview_free_movies']['deploy_to']}"
-# end
-
-# execute 'npm install' do
-#   cwd '/var/www'
-# end
-
-# Restart/start nginx
-# service "nginx" do
-#   action :restart
-#   only_if { File.exists? "/opt/nginx/logs/nginx.pid" }
-# end
-
-# service "nginx" do
-#   action :start
-#   not_if { File.exists? "/opt/nginx/logs/nginx.pid" }
-# end
-
-# bash "GET STATUS" do
-#   code <<-EOF
-#   sudo systemctl status nginx.service
-#   sudo journalctl -xn
-#   sudo /opt/nginx/sbin/nginx -t -c /opt/nginx/conf/nginx.conf
-#   EOF
-#   flags "-x"
-# end
-
-# systemd_unit "nginx.service" do
-#   action :reload
-# end
-
-# service "nginx" do
-#   provider Chef::Provider::Service::Systemd
-#   supports :status => true, :restart => true, :reload => true
-#   action [ :enable, :start ]
-#   not_if { File.exists? "/opt/nginx/logs/nginx.pid" }
-# end
-
 
