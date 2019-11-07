@@ -38,12 +38,12 @@ execute "Downloading and Deploying..." do
   not_if { File.directory? "#{app['attributes']['document_root']}/server" }
 end
 
-# execute 'Symlink Node Installation' do
-#   #command 'npm prune'
-#   command 'ln -sf /home/ec2-user/.nvm/versions/node/v10.15.2/bin/node /usr/local/bin/node'
+execute 'Symlink Node Installation' do
+  #command 'npm prune'
+  command 'ln -sf /home/ec2-user/.nvm/versions/node/v10.15.2/bin/node /usr/local/bin/node'
   
-#   user "root"
-# end
+  user "root"
+end
 
 # install NPM packages
 # execute 'Installing NPM Packages' do
@@ -64,7 +64,7 @@ bash "Install NPM Packages" do
 
   cwd 
   user "#{app['attributes']['document_root']}"
-  not_if { File.exists? "/home/ec2-user/.nvm" }
+  #not_if { File.exists? "/home/ec2-user/.nvm" }
   # creates "/usr/local/nvm/#{node['nodejs']['version']}"
 end
 
@@ -86,11 +86,12 @@ ruby_block 'LOGGING DIRECTORY STRUCTURE' do
   block do
       #Chef::Log.info(shell_out!("ls -la").stdout)
   #Chef::Log.info(shell_out!("ls -la /home").stdout)
-  #Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
+  Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
     Chef::Log.info(shell_out!("ls -la /").stdout)
-    Chef::Log.info(shell_out!("ls -la /lib").stdout)
-    Chef::Log.info(shell_out!("ls -la /usr/local").stdout)
-    Chef::Log.info(shell_out!("ls -la /opt").stdout)
+    Chef::Log.info(shell_out!("ls -la /proc").stdout)
+    Chef::Log.info(shell_out!("ls -la /usr/local/bin").stdout)
+    Chef::Log.info(shell_out!("ls -la /sys").stdout)
+    Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
   #Chef::Log.info(shell_out!("/usr/local/bin/node -v").stdout)
   #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2").stdout)
   #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2/bin").stdout)

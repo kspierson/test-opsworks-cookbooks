@@ -270,7 +270,7 @@ bash "Install NodeJS" do
   environment ({'HOME' => '/home/ec2-user', 'USER' => 'ec2-user'})
 
   user "ec2-user"
-  not_if { File.exists? "/home/ec2-user/.nvm" }
+  #not_if { File.exists? "/home/ec2-user/.nvm" }
   # creates "/usr/local/nvm/#{node['nodejs']['version']}"
 end
 
