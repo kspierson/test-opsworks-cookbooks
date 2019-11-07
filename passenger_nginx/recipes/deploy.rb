@@ -63,7 +63,7 @@ bash "Install NPM Packages" do
   environment ({'HOME' => '/home/ec2-user', 'USER' => 'ec2-user'})
 
   cwd 
-  user "#{app['attributes']['document_root']}"
+  user "ec2-user"
   #not_if { File.exists? "/home/ec2-user/.nvm" }
   # creates "/usr/local/nvm/#{node['nodejs']['version']}"
 end
