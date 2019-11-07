@@ -63,17 +63,17 @@ bash "Install NPM Packages and build platform" do
   # creates "/usr/local/nvm/#{node['nodejs']['version']}"
 end
 
-ruby_block 'LOGGING DIRECTORY STRUCTURE' do
-  block do
-    Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
-    Chef::Log.info(shell_out!("ls -la /").stdout)
-    Chef::Log.info(shell_out!("ls -la /proc").stdout)
-    Chef::Log.info(shell_out!("ls -la /usr/local/bin").stdout)
-    Chef::Log.info(shell_out!("ls -la /sys").stdout)
-    Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
-  end
-  action :run
-end
+# ruby_block 'LOGGING DIRECTORY STRUCTURE' do
+#   block do
+#     Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
+#     Chef::Log.info(shell_out!("ls -la /").stdout)
+#     Chef::Log.info(shell_out!("ls -la /proc").stdout)
+#     Chef::Log.info(shell_out!("ls -la /usr/local/bin").stdout)
+#     Chef::Log.info(shell_out!("ls -la /sys").stdout)
+#     Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
+#   end
+#   action :run
+# end
 
 # start the server
 service "nginx" do
