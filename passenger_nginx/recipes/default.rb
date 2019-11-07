@@ -27,7 +27,7 @@
 # include_recipe 'nodejs'
 
 execute "yum update" do
-  command "yum update"
+  command "yum update -y"
   user "root"
 end
 
