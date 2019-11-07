@@ -38,12 +38,12 @@ execute "Downloading and Deploying..." do
   not_if { File.directory? "#{app['attributes']['document_root']}/server" }
 end
 
-execute 'Symlink Node Installation' do
-  #command 'npm prune'
-  command 'ln -sf /home/ec2-user/.nvm/versions/node/v10.15.2/bin/node /usr/local/bin/node'
+# execute 'Symlink Node Installation' do
+#   #command 'npm prune'
+#   command 'ln -sf /home/ec2-user/.nvm/versions/node/v10.15.2/bin/node /usr/local/bin/node'
   
-  user "root"
-end
+#   user "root"
+# end
 
 # install NPM packages
 # execute 'Installing NPM Packages' do
@@ -87,11 +87,11 @@ ruby_block 'LOGGING DIRECTORY STRUCTURE' do
       #Chef::Log.info(shell_out!("ls -la").stdout)
   #Chef::Log.info(shell_out!("ls -la /home").stdout)
   #Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
-    Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
-    Chef::Log.info(shell_out!("ls -la /etc").stdout)
-    #Chef::Log.info(shell_out!("echo $NODE_DIR").stdout)
-    #Chef::Log.info(shell_out!("ls -la /var/www").stdout)
-  Chef::Log.info(shell_out!("/usr/local/bin/node -v").stdout)
+    Chef::Log.info(shell_out!("ls -la /").stdout)
+    Chef::Log.info(shell_out!("ls -la /lib").stdout)
+    Chef::Log.info(shell_out!("ls -la /usr/local").stdout)
+    Chef::Log.info(shell_out!("ls -la /opt").stdout)
+  #Chef::Log.info(shell_out!("/usr/local/bin/node -v").stdout)
   #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2").stdout)
   #Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm/versions/node/v10.15.2/bin").stdout)
   end
@@ -105,9 +105,10 @@ service "nginx" do
   # Chef::Log.info(shell_out!("ls -la /usr/bin").stdout)
   # Chef::Log.info(shell_out!("ls -la /usr/local/bin").stdout)
   provider Chef::Provider::Service::Systemd
+  user 'ec2-user'
   supports :status => true, :restart => true, :reload => true
   action [ :enable, :start ]
-  not_if { File.exists? "/opt/nginx/logs/nginx.pid" }
+  #not_if { File.exists? "/opt/nginx/logs/nginx.pid" }
 end
 
 
