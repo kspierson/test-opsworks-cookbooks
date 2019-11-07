@@ -104,7 +104,7 @@ cron 'Update Screening Invitation' do
   only_if {File.exists?('/var/www/server/build/server/src/scripts/updateScreeningInvitation.js')}
 end
 
-cron 'Screening Snapshot' do
+cron 'Generate RDS Token' do
   minute '*/14'
   command 'NODE_ENV=production flock -n /tmp/generateRDSToken.lock /usr/local/bin/node /var/www/server/build/server/src/scripts/generateRDSToken.js >> /home/ec2-user/logs/generateRDSToken.log'
   user 'ec2-user'
