@@ -113,7 +113,7 @@ end
 
 ruby_block 'Crontab Output' do
   block do
-    Chef::Log.info(shell_out!("crontab -l").stdout)
+    Chef::Log.info(shell_out!("crontab -u ec2-user -l").stdout)
   end
   action :run
 end
