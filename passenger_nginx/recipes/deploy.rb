@@ -106,7 +106,7 @@ service "nginx" do
   # Chef::Log.info(shell_out!("ls -la /usr/bin").stdout)
   # Chef::Log.info(shell_out!("ls -la /usr/local/bin").stdout)
   provider Chef::Provider::Service::Systemd
-  user 'ec2-user'
+  #user 'ec2-user'
   supports :status => true, :restart => true, :reload => true
   action [ :enable, :start ]
   #not_if { File.exists? "/opt/nginx/logs/nginx.pid" }
