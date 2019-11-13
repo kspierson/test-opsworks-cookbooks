@@ -1,30 +1,4 @@
-#
-# Cookbook Name:: passenger_nginx
-# Recipe:: default
-#
-# Copyright (C) 2014 Ballistiq Digital, Inc.
-# Modified by Ken Pierson (2019)
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
-
-# include_recipe 'git'
-# include_recipe 'nodejs'
+# WEB SERVER SETUP
 
 execute "yum update" do
   command "yum update -y"
@@ -37,8 +11,6 @@ end
 end
 
 execute "Installing GPG keys" do
-  #command "curl -sSL https://rvm.io/mpapis.asc | sudo gpg --import -"
-  #command "curl -sSL https://rvm.io/pkuczynski.asc | sudo gpg --import -"
   command "sudo gpg2 --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
 
   user "root"
@@ -126,19 +98,7 @@ template "/opt/nginx/conf/nginx.conf" do
   })
 end
 
-# Install the nginx control script
-# cookbook_file "/etc/init.d/nginx" do
-#   source "nginx.initd"
-#   action :create
-#   mode 0755
-# end
-
-# Install nginx systemd service file
-# cookbook_file "/lib/systemd/system/nginx.service" do
-#   source "nginx.service"
-#   action :create
-#   mode 0755
-# end
+# Configure Nginx Service (systemd)
 systemd_unit 'nginx.service' do
   content <<-EOU.gsub(/^\s+/, '')
   [Unit]
@@ -178,12 +138,6 @@ directory "/opt/nginx/conf/sites-available" do
   action :create
   not_if { File.directory? "/opt/nginx/conf/sites-available" }
 end
-
-# Set up service to run by default
-# service 'nginx' do
-#   supports :status => true, :restart => true, :reload => true
-#   action [ :enable ]
-# end
 
 # Add any applications that we need
 node['passenger_nginx']['apps'].each do |app|
@@ -254,6 +208,7 @@ node['passenger_nginx']['apps'].each do |app|
   end
 end
 
+# Install NVM
 execute "Installing NVM" do
   command "curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash"
   environment ({'HOME' => '/home/ec2-user', 'USER' => 'ec2-user'})
@@ -262,6 +217,7 @@ execute "Installing NVM" do
   not_if { File.exists? "/home/ec2-user/.nvm" }
 end
 
+# Install NodeJS
 bash "Install NodeJS" do
   code <<-EOC
     source /home/ec2-user/.nvm/nvm.sh
@@ -271,6 +227,5 @@ bash "Install NodeJS" do
 
   user "ec2-user"
   not_if { File.exists? "/home/ec2-user/.nvm/versions/node/v10.15.2/bin/node" }
-  # creates "/usr/local/nvm/#{node['nodejs']['version']}"
 end
 

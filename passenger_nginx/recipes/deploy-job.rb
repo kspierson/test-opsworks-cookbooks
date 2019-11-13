@@ -32,14 +32,12 @@ if File.directory? "#{app['attributes']['document_root']}/server"
 
     cwd "#{app['attributes']['document_root']}"
     user "ec2-user"
-    #not_if { File.directory? "#{app['attributes']['document_root']}/server" }
   end
 else
   execute "Downloading and Deploying..." do
     command "ssh-agent bash -c 'ssh-add /home/ec2-user/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} #{app['attributes']['document_root']}'"
 
     user "ec2-user"
-    #not_if { File.directory? "#{app['attributes']['document_root']}/server" }
   end
 end
 
@@ -48,16 +46,6 @@ execute 'Symlink Node Installation' do
   
   user "root"
 end
-
-# install NPM packages
-# execute 'Installing NPM Packages' do
-#   #command 'npm prune'
-#   command 'npm install'
-#   environment ({'HOME' => '/home/ec2-user', 'USER' => 'ec2-user'})
-  
-#   cwd "#{app['attributes']['document_root']}"
-#   user "ec2-user"
-# end
 
 bash "Install NPM Packages and build platform" do
   code <<-EOC
@@ -69,8 +57,6 @@ bash "Install NPM Packages and build platform" do
 
   cwd "#{app['attributes']['document_root']}"
   user "ec2-user"
-  #not_if { File.exists? "/home/ec2-user/.nvm" }
-  # creates "/usr/local/nvm/#{node['nodejs']['version']}"
 end
 
 # ruby_block 'LOGGING DIRECTORY STRUCTURE' do
