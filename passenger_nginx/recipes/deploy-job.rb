@@ -26,11 +26,21 @@ execute "Adding SSH key" do
   user "ec2-user"
 end
 
-execute "Downloading and Deploying..." do
-  command "ssh-agent bash -c 'ssh-add /home/ec2-user/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} #{app['attributes']['document_root']}'"
+if File.directory? "#{app['attributes']['document_root']}/server"
+  execute "Deploying..." do
+    command "ssh-agent bash -c 'ssh-add /home/ec2-user/.ssh/id_rsa; git pull origin #{app['app_source']['revision']}"
 
-  user "ec2-user"
-  not_if { File.directory? "#{app['attributes']['document_root']}/server" }
+    cwd "#{app['attributes']['document_root']}"
+    user "ec2-user"
+    #not_if { File.directory? "#{app['attributes']['document_root']}/server" }
+  end
+else
+  execute "Downloading and Deploying..." do
+    command "ssh-agent bash -c 'ssh-add /home/ec2-user/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} #{app['attributes']['document_root']}'"
+
+    user "ec2-user"
+    #not_if { File.directory? "#{app['attributes']['document_root']}/server" }
+  end
 end
 
 execute 'Symlink Node Installation' do
