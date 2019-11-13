@@ -1,7 +1,7 @@
 #app = search("aws_opsworks_app").first
 # Deploy correct application
 search("aws_opsworks_app").each do |app|
-  Chef::Log.info("********** The app's short name is '#{opsapp['shortname']}' **********")
+  Chef::Log.info("********** The app's short name is '#{app['shortname']}' **********")
   if app['shortname'] == node[:application]
 
     directory "/home/ec2-user/.ssh" do
