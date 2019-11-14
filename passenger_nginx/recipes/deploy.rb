@@ -34,6 +34,7 @@ search("aws_opsworks_app").each do |app|
 
         cwd "#{app['attributes']['document_root']}"
         user "ec2-user"
+        notifies :reload, "service[nginx]", :delayed
       end
     else
       execute "Downloading and Deploying..." do
