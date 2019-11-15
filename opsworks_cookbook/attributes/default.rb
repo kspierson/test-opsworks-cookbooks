@@ -24,7 +24,7 @@ default['passenger_nginx']['passenger']['rolling_restarts'] = nil
 #default['passenger_nginx']['passenger']['pre_start'] = []
 
 # Applications
-#default['passenger_nginx']['apps'] = []
+default['passenger_nginx']['apps'] = []
 
 # Node
 default['nodejs']['version'] = '10.15.2'
