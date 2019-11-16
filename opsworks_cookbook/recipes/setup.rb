@@ -25,10 +25,10 @@ execute "Installing RVM and Ruby" do
 end
 
 # Add deploy user to rvm
-execute "Add deploy user to RVM" do
-  command "usermod -a -G rvm #{node['passenger_nginx']['nginx']['user']}"
-  user "root"
-end
+# execute "Add deploy user to RVM" do
+#   command "usermod -a -G rvm #{node['passenger_nginx']['nginx']['user']}"
+#   user "root"
+# end
 
 # Install Ruby
 bash "Install Ruby" do
