@@ -1,4 +1,11 @@
 # Site Maintenance Page
+directory "/var/maintenance" do
+  mode 0755
+  owner 'ec2-user'
+  action :create
+  not_if { File.directory? "/var/maintenance" }
+end
+
 cookbook_file '/var/maintenance/index.html' do
   source 'maintenance.html'
   owner 'ec2-user'
