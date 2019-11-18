@@ -1,3 +1,12 @@
+# Site Maintenance Page
+cookbook_file '#{app['attributes']['document_root']}/maintenance/index.html' do
+  source 'maintenance.html'
+  owner 'ec2-user'
+  mode '0755'
+  action :create
+  notifies :reload, "service[nginx]"
+end
+
 # Deploy correct application
 search("aws_opsworks_app").each do |app|
   if app['shortname'] == node[:application]
@@ -41,6 +50,7 @@ search("aws_opsworks_app").each do |app|
         command "ssh-agent bash -c 'ssh-add /home/ec2-user/.ssh/id_rsa; git clone -b #{app['app_source']['revision']} --single-branch #{app['app_source']['url']} #{app['attributes']['document_root']}'"
 
         user "ec2-user"
+        notifies :start, "service[nginx]", :delayed
       end
     end
 
@@ -60,6 +70,7 @@ search("aws_opsworks_app").each do |app|
 
       cwd "#{app['attributes']['document_root']}"
       user "ec2-user"
+      #notifies :delete, 'cookbook_file[#{app['attributes']['document_root']}/maintenance/index.html]'
     end
 
     # ruby_block 'LOGGING DIRECTORY STRUCTURE' do
@@ -75,12 +86,12 @@ search("aws_opsworks_app").each do |app|
     # end
 
     # start the server
-    service "nginx" do
-      provider Chef::Provider::Service::Systemd
-      supports :status => true, :restart => true, :reload => true
-      action [ :enable, :start ]
-      #not_if { File.exists? "/opt/nginx/logs/nginx.pid" }
-    end
+    # service "nginx" do
+    #   #provider Chef::Provider::Service::Systemd
+    #   #supports :status => true, :restart => true, :reload => true
+    #   action [ :start ]
+    #   #not_if { File.exists? "/opt/nginx/logs/nginx.pid" }
+    # end
 
   end
 end

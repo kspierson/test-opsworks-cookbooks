@@ -85,15 +85,30 @@ http {
         # Sticky sessions if we use socket.io/long polling
         passenger_sticky_sessions on;
 
+        if (-f $document_root/../maintenance/index.html) {
+            location = / {
+                root /var/www/maintenance;
+                return 503 /index.html;
+            }
+        }
+
         #error_page  404              /404.html;
 
         # redirect server error pages to the static page /50x.html
         #
         error_page   500 502 503 504  /50x.html;
+        #error_page 503 /under_maintenance.html;
+
+        # location /under_maintenance.html {
+        #         root /var/www/maintenance;
+        #         internal;
+        # }
         location = /50x.html {
             root   html;
         }
-        location /robots.txt {return 200 "User-agent: BLEXBot\nDisallow: /\n";}
+        location /robots.txt {
+            return 200 "User-agent: BLEXBot\nDisallow: /\n";
+        }
     }
 
 }

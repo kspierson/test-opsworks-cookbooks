@@ -229,3 +229,11 @@ bash "Install NodeJS" do
   not_if { File.exists? "/home/ec2-user/.nvm/versions/node/v10.15.2/bin/node" }
 end
 
+# Enable Nginx
+service "nginx" do
+  provider Chef::Provider::Service::Systemd
+  supports :status => true, :restart => true, :reload => true
+  action [ :enable ]
+  #not_if { File.exists? "/opt/nginx/logs/nginx.pid" }
+end
+
