@@ -1,3 +1,11 @@
+# Enable Nginx
+service "nginx" do
+  provider Chef::Provider::Service::Systemd
+  supports :status => true, :restart => true, :reload => true
+  action [ :enable ]
+  #not_if { File.exists? "/opt/nginx/logs/nginx.pid" }
+end
+
 # Site Maintenance Page
 directory "/opt/nginx/html" do
   mode 0755
