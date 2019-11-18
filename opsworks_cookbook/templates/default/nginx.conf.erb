@@ -85,9 +85,9 @@ http {
         # Sticky sessions if we use socket.io/long polling
         passenger_sticky_sessions on;
 
-        if (-f $document_root/../maintenance/index.html) {
+        if (-f /var/maintenance/index.html) {
             location = / {
-                root /var/www/maintenance;
+                root /var/maintenance;
                 return 503 /index.html;
             }
         }
