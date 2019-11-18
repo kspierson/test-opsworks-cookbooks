@@ -98,7 +98,7 @@ http {
         error_page   500 502 504  /50x.html;
         error_page 503 @maintenance;
 
-        location = @maintenance {
+        location @maintenance {
             root   html;
             try_files /maintenance.html /50x.html =503;
         }
