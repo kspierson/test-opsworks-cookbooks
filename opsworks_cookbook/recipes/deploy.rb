@@ -77,7 +77,7 @@ search("aws_opsworks_app").each do |app|
 
       cwd "#{app['attributes']['document_root']}"
       user "ec2-user"
-      #notifies :delete, 'cookbook_file[/opt/nginx/html/index.html]'
+      notifies :delete, 'cookbook_file[/opt/nginx/html/index.html]'
     end
 
     # ruby_block 'LOGGING DIRECTORY STRUCTURE' do
