@@ -1,12 +1,12 @@
 # Site Maintenance Page
-directory "/var/maintenance" do
+directory "/opt/nginx/html" do
   mode 0755
-  owner 'ec2-user'
+
   action :create
-  not_if { File.directory? "/var/maintenance" }
+  not_if { File.directory? "/opt/nginx/html" }
 end
 
-cookbook_file '/var/maintenance/index.html' do
+cookbook_file '/opt/nginx/html/maintenance.html' do
   source 'maintenance.html'
   owner 'ec2-user'
   mode '0755'
@@ -77,7 +77,7 @@ search("aws_opsworks_app").each do |app|
 
       cwd "#{app['attributes']['document_root']}"
       user "ec2-user"
-      #notifies :delete, 'cookbook_file[var/maintenance/index.html]'
+      #notifies :delete, 'cookbook_file[/opt/nginx/html/index.html]'
     end
 
     # ruby_block 'LOGGING DIRECTORY STRUCTURE' do

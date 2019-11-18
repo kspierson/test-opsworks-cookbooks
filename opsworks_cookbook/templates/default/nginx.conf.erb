@@ -86,7 +86,7 @@ http {
         passenger_sticky_sessions on;
 
         location = / {
-            if (-f /var/maintenance/index.html) {
+            if (-f /opt/html/maintenance.html) {
                 return 503;
             }
         }
@@ -104,7 +104,7 @@ http {
         # }
         location = @maintenance {
             # root   html;
-            try_files /var/www/maintenance/index.html /opt/nginx/html/50x.html =503;
+            try_files /maintenance.html /50x.html =503;
         }
         location = /50x.html {
             root   html;
