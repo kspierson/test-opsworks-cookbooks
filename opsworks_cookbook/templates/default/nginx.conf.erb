@@ -85,8 +85,8 @@ http {
         # Sticky sessions if we use socket.io/long polling
         passenger_sticky_sessions on;
 
-        location = / {
-            if (-f /opt/html/maintenance.html) {
+        location / {
+            if (-f /opt/nginx/html/maintenance.html) {
                 return 503;
             }
         }
@@ -96,20 +96,16 @@ http {
         # redirect server error pages to the static page /50x.html
         #
         error_page   500 502 504  /50x.html;
-        error_page 503 /under_maintenance.html;
+        error_page 503 @maintenance;
 
-        # location /under_maintenance.html {
-        #         root /var/www/maintenance;
-        #         internal;
-        # }
         location = @maintenance {
-            # root   html;
+            root   html;
             try_files /maintenance.html /50x.html =503;
         }
         location = /50x.html {
             root   html;
         }
-        location /robots.txt {
+        location = /robots.txt {
             return 200 "User-agent: BLEXBot\nDisallow: /\n";
         }
     }
