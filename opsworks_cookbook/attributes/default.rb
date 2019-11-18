@@ -29,3 +29,5 @@ default['passenger_nginx']['apps'] = []
 # Node
 default['nodejs']['version'] = '10.15.2'
 
+# App
+default['root_dir'] = '/var/www/client/dist'

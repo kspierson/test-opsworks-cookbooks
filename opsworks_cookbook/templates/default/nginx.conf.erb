@@ -79,7 +79,7 @@ http {
 
         root  /var/www/client/dist;
         passenger_enabled on;
-        passenger_startup_file ../server/build/server/src/server.js;
+        passenger_startup_file /var/www/server/build/server/src/server.js;
         passenger_app_type node;
 
         # Sticky sessions if we use socket.io/long polling
