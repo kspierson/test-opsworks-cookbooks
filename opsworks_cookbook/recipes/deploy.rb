@@ -46,7 +46,7 @@ search("aws_opsworks_app").each do |app|
 
     if File.directory? "#{app['attributes']['document_root']}/server"
       execute "Deploying..." do
-        command "ssh-agent bash -c 'ssh-add /home/ec2-user/.ssh/id_rsa; git pull origin #{app['app_source']['revision']}'"
+        command "ssh-agent bash -c 'ssh-add /home/ec2-user/.ssh/id_rsa; git fetch --all && git reset --hard origin/#{app['app_source']['revision']}'"
 
         cwd "#{app['attributes']['document_root']}"
         user "ec2-user"
