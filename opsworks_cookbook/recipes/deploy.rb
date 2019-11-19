@@ -69,12 +69,6 @@ search("aws_opsworks_app").each do |app|
       end
     end
 
-    execute 'Symlink Node Installation' do
-      command 'ln -sf /home/ec2-user/.nvm/versions/node/v10.15.2/bin/node /usr/local/bin/node'
-      
-      user "root"
-    end
-
     bash "Install NPM Packages and build platform" do
       code <<-EOC
         source /home/ec2-user/.bashrc
@@ -87,26 +81,6 @@ search("aws_opsworks_app").each do |app|
       user "ec2-user"
       notifies :delete, 'cookbook_file[/opt/nginx/html/maintenance.html]'
     end
-
-    # ruby_block 'LOGGING DIRECTORY STRUCTURE' do
-    #   block do
-    #     Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
-    #     Chef::Log.info(shell_out!("ls -la /").stdout)
-    #     Chef::Log.info(shell_out!("ls -la /proc").stdout)
-    #     Chef::Log.info(shell_out!("ls -la /usr/local/bin").stdout)
-    #     Chef::Log.info(shell_out!("ls -la /sys").stdout)
-    #     Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
-    #   end
-    #   action :run
-    # end
-
-    # start the server
-    # service "nginx" do
-    #   #provider Chef::Provider::Service::Systemd
-    #   #supports :status => true, :restart => true, :reload => true
-    #   action [ :start ]
-    #   #not_if { File.exists? "/opt/nginx/logs/nginx.pid" }
-    # end
 
   end
 end
