@@ -78,7 +78,7 @@ http {
 
         #access_log  logs/host.access.log  main;
 
-        root  /var/www/client/dist;
+        root  <%= @root_dir %>;
         passenger_enabled on;
         passenger_startup_file /var/www/server/build/server/src/server.js;
         passenger_app_type node;
