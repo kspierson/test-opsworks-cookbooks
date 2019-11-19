@@ -222,7 +222,7 @@ end
 bash "Install NodeJS" do
   code <<-EOC
     source /home/ec2-user/.nvm/nvm.sh
-    nvm install 10.15.2
+    nvm install #{node['nodejs_version']}
   EOC
   environment ({'HOME' => '/home/ec2-user', 'USER' => 'ec2-user'})
 
