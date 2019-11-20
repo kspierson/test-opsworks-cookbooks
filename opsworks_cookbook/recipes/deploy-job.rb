@@ -62,18 +62,6 @@ search("aws_opsworks_app").each do |app|
       user "ec2-user"
     end
 
-    # ruby_block 'LOGGING DIRECTORY STRUCTURE' do
-    #   block do
-    #     Chef::Log.info(shell_out!("ls -la /home/ec2-user/.nvm").stdout)
-    #     Chef::Log.info(shell_out!("ls -la /").stdout)
-    #     Chef::Log.info(shell_out!("ls -la /proc").stdout)
-    #     Chef::Log.info(shell_out!("ls -la /usr/local/bin").stdout)
-    #     Chef::Log.info(shell_out!("ls -la /sys").stdout)
-    #     Chef::Log.info(shell_out!("ls -la /home/ec2-user").stdout)
-    #   end
-    #   action :run
-    # end
-
     # Add Cron Jobs
     cron 'Screening Snapshot' do
       minute '*/7'
@@ -103,19 +91,12 @@ search("aws_opsworks_app").each do |app|
       only_if {File.exists?('/var/www/server/build/server/src/scripts/updateScreeningInvitation.js')}
     end
 
-    cron 'Generate RDS Token' do
-      minute '*/14'
-      command 'NODE_ENV=production flock -n /tmp/generateRDSToken.lock /usr/local/bin/node /var/www/server/build/server/src/scripts/generateRDSToken.js >> /home/ec2-user/logs/generateRDSToken.log'
-      user 'ec2-user'
-      only_if {File.exists?('/var/www/server/build/server/src/scripts/generateRDSToken.js')}
-    end
-
-    ruby_block 'Crontab Output' do
-      block do
-        Chef::Log.info(shell_out!("crontab -u ec2-user -l").stdout)
-      end
-      action :run
-    end
+    # cron 'Generate RDS Token' do
+    #   minute '*/14'
+    #   command 'NODE_ENV=production flock -n /tmp/generateRDSToken.lock /usr/local/bin/node /var/www/server/build/server/src/scripts/generateRDSToken.js >> /home/ec2-user/logs/generateRDSToken.log'
+    #   user 'ec2-user'
+    #   only_if {File.exists?('/var/www/server/build/server/src/scripts/generateRDSToken.js')}
+    # end
 
   end
 end
