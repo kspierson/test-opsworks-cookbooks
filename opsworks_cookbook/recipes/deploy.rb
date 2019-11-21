@@ -19,7 +19,7 @@ cookbook_file '/opt/nginx/html/maintenance.html' do
   owner 'ec2-user'
   mode '0755'
   action :create
-  not_if { File.exists? "/opt/nginx/html/maintenance.html" }
+  # not_if { File.exists? "/opt/nginx/html/maintenance.html" }
   notifies :reload, "service[nginx]"
 end
 
