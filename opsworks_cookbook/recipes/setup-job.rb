@@ -23,11 +23,17 @@ end
 bash "Install NodeJS" do
   code <<-EOC
     source /home/ec2-user/.nvm/nvm.sh
-    nvm install 10.15.2
+    nvm install #{node['nodejs_version']}
   EOC
   environment ({'HOME' => '/home/ec2-user', 'USER' => 'ec2-user'})
 
   user "ec2-user"
-  not_if { File.exists? "/home/ec2-user/.nvm/versions/node/v10.15.2/bin/node" }
+  not_if { File.exists? "/home/ec2-user/.nvm/versions/node/v#{node['nodejs_version']}/bin/node" }
+end
+
+execute 'Symlink Node Installation' do
+  command "ln -sf /home/ec2-user/.nvm/versions/node/v#{node['nodejs_version']}/bin/node /usr/local/bin/node"
+  
+  user "root"
 end
 

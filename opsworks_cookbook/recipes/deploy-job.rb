@@ -44,12 +44,6 @@ search("aws_opsworks_app").each do |app|
       end
     end
 
-    execute 'Symlink Node Installation' do
-      command 'ln -sf /home/ec2-user/.nvm/versions/node/v10.15.2/bin/node /usr/local/bin/node'
-      
-      user "root"
-    end
-
     bash "Install NPM Packages and build platform" do
       code <<-EOC
         source /home/ec2-user/.bashrc
