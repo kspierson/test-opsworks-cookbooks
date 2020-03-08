@@ -230,11 +230,11 @@ bash "Install NodeJS" do
   not_if { File.exists? "/home/ec2-user/.nvm/versions/node/v#{node['nodejs_version']}/bin/node" }
 end
 
-execute 'Set NodeJS Max HTTP Header Size' do
-  command "NODE_OPTIONS='--max-http-header-size=81920'"
+# execute 'Set NodeJS Max HTTP Header Size' do
+#   command "NODE_OPTIONS='--max-http-header-size=81920'"
   
-  user "root"
-end
+#   user "root"
+# end
 
 execute 'Symlink Node Installation' do
   command "ln -sf /home/ec2-user/.nvm/versions/node/v#{node['nodejs_version']}/bin/node /usr/local/bin/node"

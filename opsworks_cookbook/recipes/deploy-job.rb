@@ -84,6 +84,13 @@ search("aws_opsworks_app").each do |app|
       only_if {File.exists?('/var/www/server/build/server/src/scripts/updateScreeningInvitation.js')}
     end
 
+    cron 'Send Scheduled Emails' do
+      minute '*/5'
+      command 'NODE_ENV=production flock -n /tmp/sendScheduledEmails.lock /usr/local/bin/node /var/www/server/build/server/src/scripts/sendScheduledEmails.js >> /home/ec2-user/logs/scheduledEmailsCron.log'
+      user 'ec2-user'
+      only_if {File.exists?('/var/www/server/build/server/src/scripts/sendScheduledEmails.js')}
+    end
+
     # cron 'Generate RDS Token' do
     #   minute '*/14'
     #   command 'NODE_ENV=production flock -n /tmp/generateRDSToken.lock /usr/local/bin/node /var/www/server/build/server/src/scripts/generateRDSToken.js >> /home/ec2-user/logs/generateRDSToken.log'
