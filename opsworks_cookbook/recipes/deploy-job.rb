@@ -55,6 +55,14 @@ search("aws_opsworks_app").each do |app|
       user "ec2-user"
     end
 
+    # Cron Logs Directory
+    directory "/home/ec2-user/logs" do
+      mode 0755
+
+      action :create
+      not_if { File.directory? "/home/ec2-user/logs" }
+    end
+
     # Add Cron Jobs
     cron 'Screening Snapshot' do
       minute '*/7'
