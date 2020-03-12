@@ -57,8 +57,8 @@ search("aws_opsworks_app").each do |app|
 
     # Cron Logs Directory
     directory "/home/ec2-user/logs" do
+      owner 'ec2-user'
       mode 0755
-
       action :create
       not_if { File.directory? "/home/ec2-user/logs" }
     end
