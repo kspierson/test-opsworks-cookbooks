@@ -79,7 +79,8 @@ search("aws_opsworks_app").each do |app|
     end
 
     cron 'Create DB Snapshot' do
-      minute '*'
+      minute '0'
+      hour '7'
       command 'NODE_ENV=production flock -n /tmp/takeDbSnapshot.lock /usr/local/bin/node /var/www/server/build/server/src/scripts/takeDbSnapshot.js >> /home/ec2-user/logs/dbSnapshotCron.log'
       user 'ec2-user'
       only_if {File.exists?('/var/www/server/build/server/src/scripts/takeDbSnapshot.js')}
