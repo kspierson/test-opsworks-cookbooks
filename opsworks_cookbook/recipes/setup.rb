@@ -10,6 +10,16 @@ end
   yum_package pkg
 end
 
+# Install Vanta Agent
+execute "Installing Vanta Agent" do
+  command "curl -o- https://raw.githubusercontent.com/VantaInc/vanta-agent-scripts/master/install-linux.sh | bash"
+  environment ({'VANTA_KEY' => 'fggycre8ynt1fnwfn004vx0drq58j9g3fddrc9gpvngx7nxegwt0'})
+
+  user "ec2-user"
+  regex = Regexp.escape("vanta.x86_64")
+    not_if { `bash -c "yum list installed vanta"`.lines.grep(/^#{regex}/).count > 0 }
+end
+
 execute "Installing GPG keys" do
   command "gpg2 --homedir /root/.gnupg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
 

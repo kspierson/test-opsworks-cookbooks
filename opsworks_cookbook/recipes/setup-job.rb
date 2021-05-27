@@ -10,6 +10,16 @@ end
   yum_package pkg
 end
 
+# Install Vanta Agent
+execute "Installing Vanta Agent" do
+  command "curl -o- https://raw.githubusercontent.com/VantaInc/vanta-agent-scripts/master/install-linux.sh | bash"
+  environment ({'VANTA_KEY' => 'fggycre8ynt1fnwfn004vx0drq58j9g3fddrc9gpvngx7nxegwt0'})
+
+  user "ec2-user"
+  regex = Regexp.escape("vanta.x86_64")
+    not_if { `bash -c "yum list installed vanta"`.lines.grep(/^#{regex}/).count > 0 }
+end
+
 # Install NVM
 execute "Installing NVM" do
   command "curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.38.0/install.sh | bash"
