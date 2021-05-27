@@ -211,7 +211,7 @@ end
 
 # Install NVM
 execute "Installing NVM" do
-  command "curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash"
+  command "curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.38.0/install.sh | bash"
   environment ({'HOME' => '/home/ec2-user', 'USER' => 'ec2-user'})
 
   user "ec2-user"
