@@ -29,5 +29,8 @@ default['passenger_nginx']['apps'] = []
 # Node
 default['nodejs_version'] = '10.15.2'
 
+# Darktrace
+default['darktrace']['installer'] = 'darktrace-ossensor-5.1.1-0.b954.sabre.amzn2.x86_64'
+
 # App
 default['root_dir'] = '/var/www/client/dist'

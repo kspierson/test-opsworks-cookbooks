@@ -1,0 +1,39 @@
+[osSensor]
+# Set from level 0 (info level logging) to 5 (full packet data dumped)
+# 5 = print all packet contents as hex (very verbose!)
+# 4 = print summary of each chunk of packets (time and size)
+# 3 = Antigena info
+# 2 = print info such as sending (number / size) or not sending, and the response.  Sentpackets  stat will work in this level
+# 1 = packet capture stats & Antigena info
+# 0 = basic info
+Debug=1
+
+# The host and port of the vSensor instance IP:PORT
+vSensor=@darktrace['ip']
+# HMAC key for use with the vsensor
+key=@darktrace['key']
+
+# Device name from which to capture traffic
+device=
+# OR to detect which device to capture from - will find the interface name from the ip in this subnet
+#ip=192.168.0.0/16
+
+# Enable Antigena capabilities
+useAntigena=true
+
+# Enable websocket communication to VSensor
+useWebsocket=true
+
+# User to drop privileges to after startup
+#user=nobody
+
+# Where to log the output of the osSensor
+logfile=/var/log/darktrace/ossensor.log
+
+#A custom bpf filter to use (see man pcap-filter)
+#eg Don't count incoming port 80/443 traffic to 172.31.29.42, but do capture outbound 443/80
+#bpf=host 192.168.10.118
+#bpf=not (((dst port 80 or dst port 443) and dst host 172.31.29.42) or ((src port 80 or src port 443) and src host 172.31.29.42))
+
+#Post Antigena actions to vSensor with time delta (in seconds)
+sendAntigenaActionDelta=20
