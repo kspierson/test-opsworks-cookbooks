@@ -48,7 +48,7 @@ service "darktrace-ossensor" do
 end
 
 execute "Installing GPG keys" do
-  command "gpg --keyserver $(getent hosts keys.gnupg.net | awk '{ print $1 }' | head -1) --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
+  command "gpg2 --verbose --homedir /root/.gnupg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
 
   user "root"
   retries 5
