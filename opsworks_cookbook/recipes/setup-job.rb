@@ -17,27 +17,31 @@ execute "Installing Vanta Agent" do
 
   user "ec2-user"
   regex = Regexp.escape("vanta.x86_64")
-    not_if { `bash -c "yum list installed vanta"`.lines.grep(/^#{regex}/).count > 0 }
+  not_if { `bash -c "yum list installed vanta"`.lines.grep(/^#{regex}/).count > 0 }
 end
 
 # Download DarkTrace
 execute "Download Darktrace" do
   command "aws s3 cp s3://seasi-deps/darktrace/#{node['darktrace']['installer']}.rpm /home/ec2-user/#{node['darktrace']['installer']}.rpm"
   user "ec2-user"
+  not_if { File.exists? "/etc/ossensor.conf" }
 end
 
 # Install DarkTrace
 execute "Install Darktrace" do
   command "yum install -y /home/ec2-user/#{node['darktrace']['installer']}.rpm"
   user "root"
+  not_if { File.exists? "/etc/ossensor.conf" }
 end
 
 # Configure DarkTrace
 template "/etc/ossensor.conf" do
   source "ossensor.conf.erb"
   variables({
-    :nginx => node['darktrace']
+    darktrace => node['darktrace'],
+    ipaddress => instance['private_ip']
   })
+  not_if { File.exists? "/etc/ossensor.conf" }
 end
 
 # Enable and Start Darktrace

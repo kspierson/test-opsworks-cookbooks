@@ -1,4 +1,5 @@
 # WEB SERVER SETUP
+instance = search("aws_opsworks_instance", "self:true").first
 
 execute "yum update" do
   command "yum update -y"
@@ -17,27 +18,31 @@ execute "Installing Vanta Agent" do
 
   user "ec2-user"
   regex = Regexp.escape("vanta.x86_64")
-    not_if { `bash -c "yum list installed vanta"`.lines.grep(/^#{regex}/).count > 0 }
+  not_if { `bash -c "yum list installed vanta"`.lines.grep(/^#{regex}/).count > 0 }
 end
 
 # Download DarkTrace
 execute "Download Darktrace" do
   command "aws s3 cp s3://seasi-deps/darktrace/#{node['darktrace']['installer']}.rpm /home/ec2-user/#{node['darktrace']['installer']}.rpm"
   user "ec2-user"
+  not_if { File.exists? "/etc/ossensor.conf" }
 end
 
 # Install DarkTrace
 execute "Install Darktrace" do
   command "yum install -y /home/ec2-user/#{node['darktrace']['installer']}.rpm"
   user "root"
+  not_if { File.exists? "/etc/ossensor.conf" }
 end
 
 # Configure DarkTrace
 template "/etc/ossensor.conf" do
   source "ossensor.conf.erb"
   variables({
-    :nginx => node['darktrace']
+    darktrace => node['darktrace'],
+    ipaddress => instance['private_ip']
   })
+  not_if { File.exists? "/etc/ossensor.conf" }
 end
 
 # Enable and Start Darktrace
@@ -55,7 +60,7 @@ end
 #   not_if { File.exists? "/usr/local/rvm/bin/rvm" }
 # end
 
-bash "Installing GPG keys" do
+bash "Installing GPG keys directly" do
   code "curl -sSL https://rvm.io/mpapis.asc | gpg2 --import - && curl -sSL https://rvm.io/pkuczynski.asc | gpg2 --import -"
 
   user "root"
@@ -135,12 +140,12 @@ end
 template "/opt/nginx/conf/nginx.conf" do
   source "nginx.conf.erb"
   variables({
-    :ruby_version => node['passenger_nginx']['ruby_version'],
-    :rvm => node['rvm'],
-    :root_dir => node['root_dir'],
-    :passenger_root => passenger_root,
-    :passenger => node['passenger_nginx']['passenger'],
-    :nginx => node['passenger_nginx']['nginx']
+    ruby_version => node['passenger_nginx']['ruby_version'],
+    rvm => node['rvm'],
+    root_dir => node['root_dir'],
+    passenger_root => passenger_root,
+    passenger => node['passenger_nginx']['passenger'],
+    nginx => node['passenger_nginx']['nginx']
   })
 end
 

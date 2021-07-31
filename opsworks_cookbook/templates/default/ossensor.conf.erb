@@ -9,14 +9,14 @@
 Debug=1
 
 # The host and port of the vSensor instance IP:PORT
-vSensor=@darktrace['ip']
+vSensor=<%= @darktrace['ip'] %>
 # HMAC key for use with the vsensor
-key=@darktrace['key']
+key=<%= @darktrace['key'] %>
 
 # Device name from which to capture traffic
-device=
+#device=
 # OR to detect which device to capture from - will find the interface name from the ip in this subnet
-#ip=192.168.0.0/16
+ip=<%= @ipaddress %>/32
 
 # Enable Antigena capabilities
 useAntigena=true
