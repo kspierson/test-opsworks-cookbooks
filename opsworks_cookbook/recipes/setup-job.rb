@@ -1,4 +1,5 @@
 # JOB SERVER SETUP
+instance = search("aws_opsworks_instance", "self:true").first
 
 execute "yum update" do
   command "yum update -y"
