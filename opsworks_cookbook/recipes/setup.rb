@@ -140,12 +140,12 @@ end
 template "/opt/nginx/conf/nginx.conf" do
   source "nginx.conf.erb"
   variables({
-    ruby_version => node['passenger_nginx']['ruby_version'],
-    rvm => node['rvm'],
-    root_dir => node['root_dir'],
-    passenger_root => passenger_root,
-    passenger => node['passenger_nginx']['passenger'],
-    nginx => node['passenger_nginx']['nginx']
+    :ruby_version => node['passenger_nginx']['ruby_version'],
+    :rvm => node['rvm'],
+    :root_dir => node['root_dir'],
+    :passenger_root => passenger_root,
+    :passenger => node['passenger_nginx']['passenger'],
+    :nginx => node['passenger_nginx']['nginx']
   })
 end
 
