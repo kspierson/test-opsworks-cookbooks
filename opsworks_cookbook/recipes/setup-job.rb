@@ -25,7 +25,7 @@ end
 execute "Download Darktrace" do
   command "aws s3 cp s3://seasi-deps/darktrace/#{node['darktrace']['installer']}.rpm /home/ec2-user/#{node['darktrace']['installer']}.rpm"
   user "ec2-user"
-  not_if { File.exists? "/etc/darktrace/ossensor.cfg" }
+  not_if { File.exists? "/home/ec2-user/#{node['darktrace']['installer']}.rpm" }
 end
 
 # Install DarkTrace
@@ -33,6 +33,12 @@ execute "Install Darktrace" do
   command "yum install -y /home/ec2-user/#{node['darktrace']['installer']}.rpm"
   user "root"
   not_if { File.exists? "/etc/darktrace/ossensor.cfg" }
+end
+
+directory "/etc/darktrace" do
+  mode 0755
+  action :create
+  not_if { File.directory? "/etc/darktrace" }
 end
 
 # Configure DarkTrace
