@@ -44,10 +44,11 @@ end
 # Configure DarkTrace
 template "/etc/darktrace/ossensor.cfg" do
   source "ossensor.cfg.erb"
-  variables({
-    :darktrace => node[:darktrace],
-    :ipaddress => instance[:private_ip]
-  })
+  variables(
+    darktrace_key: node[:darktrace][:key],
+    darktrace_ip: node[:darktrace][:ip],
+    ipaddress: instance[:private_ip]
+  )
   not_if { File.exists? "/etc/darktrace/ossensor.cfg" }
 end
 
