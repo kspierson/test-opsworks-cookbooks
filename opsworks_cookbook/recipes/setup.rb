@@ -25,24 +25,24 @@ end
 execute "Download Darktrace" do
   command "aws s3 cp s3://seasi-deps/darktrace/#{node['darktrace']['installer']}.rpm /home/ec2-user/#{node['darktrace']['installer']}.rpm"
   user "ec2-user"
-  not_if { File.exists? "/etc/ossensor.conf" }
+  not_if { File.exists? "/etc/darktrace/ossensor.cfg" }
 end
 
 # Install DarkTrace
 execute "Install Darktrace" do
   command "yum install -y /home/ec2-user/#{node['darktrace']['installer']}.rpm"
   user "root"
-  not_if { File.exists? "/etc/ossensor.conf" }
+  not_if { File.exists? "/etc/darktrace/ossensor.cfg" }
 end
 
 # Configure DarkTrace
-template "/etc/ossensor.conf" do
-  source "ossensor.conf.erb"
+template "/etc/darktrace/ossensor.cfg" do
+  source "ossensor.cfg.erb"
   variables({
     :darktrace => node['darktrace'],
     :ipaddress => instance['private_ip']
   })
-  not_if { File.exists? "/etc/ossensor.conf" }
+  not_if { File.exists? "/etc/darktrace/ossensor.cfg" }
 end
 
 # Enable and Start Darktrace
