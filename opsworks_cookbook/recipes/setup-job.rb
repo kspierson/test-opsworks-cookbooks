@@ -49,7 +49,7 @@ template "/etc/darktrace/ossensor.cfg" do
     darktrace_ip: node[:darktrace][:ip],
     ipaddress: instance[:private_ip]
   )
-  not_if { File.exists? "/etc/darktrace/ossensor.cfg" }
+  #not_if { File.exists? "/etc/darktrace/ossensor.cfg" }
 end
 
 # Enable and Start Darktrace
