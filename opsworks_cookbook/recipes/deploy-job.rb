@@ -100,6 +100,14 @@ search("aws_opsworks_app").each do |app|
       only_if {File.exists?('/var/www/server/build/server/src/scripts/sendScheduledEmails.js')}
     end
 
+    cron 'Update Membership' do
+      minute '0'
+      hour '6'
+      command 'NODE_ENV=production flock -n /tmp/updateMembership.lock /usr/local/bin/node /var/www/server/build/server/src/scripts/updateMembership.js >> /home/ec2-user/logs/updateMembershipCron.log'
+      user 'ec2-user'
+      only_if {File.exists?('/var/www/server/build/server/src/scripts/updateMembership.js')}
+    end
+
     # cron 'Generate RDS Token' do
     #   minute '*/14'
     #   command 'NODE_ENV=production flock -n /tmp/generateRDSToken.lock /usr/local/bin/node /var/www/server/build/server/src/scripts/generateRDSToken.js >> /home/ec2-user/logs/generateRDSToken.log'
