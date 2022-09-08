@@ -73,6 +73,7 @@ search("aws_opsworks_app").each do |app|
     bash "Install NPM Packages and build platform" do
       code <<-EOC
         source /home/ec2-user/.bashrc
+        rm -rf node_modules
         npm install
         npm run build
       EOC
