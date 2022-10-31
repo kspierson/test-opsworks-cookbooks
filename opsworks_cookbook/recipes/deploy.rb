@@ -47,8 +47,8 @@ search("aws_opsworks_app").each do |app|
       action :create
     end
 
-    execute "Adding SSH key" do
-      command "ssh-keyscan -H gitlab.com >> /home/ec2-user/.ssh/known_hosts"
+    execute "Adding Bitbucket SSH key" do
+      command "ssh-keyscan -H bitbucket.org >> /home/ec2-user/.ssh/known_hosts"
 
       user "ec2-user"
     end
